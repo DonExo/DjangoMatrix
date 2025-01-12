@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="container" x-data="{ base: 'python' }">
+        <h1>Django Matrix Compatibility</h1><br/>
+
+        <!-- Toggle Form -->
+        <form class="toggle-form">
+            <div class="form-check form-check-inline">
+                <input
+                    class="form-check-input"
+                    type="radio"
+                    id="basePython"
+                    value="python"
+                    x-model="base"
+                    checked
+                >
+                <label class="form-check-label" for="basePython">Python as Base</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input
+                    class="form-check-input"
+                    type="radio"
+                    id="baseDjango"
+                    value="django"
+                    x-model="base"
+                >
+                <label class="form-check-label" for="baseDjango">Django as Base</label>
+            </div>
+        </form>
+
+        <!-- Python-based Compatibility Table -->
+        <div x-show="base === 'python'" x-cloak>
+            <table class="table table-striped compatibility-table">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Python Version</th>
+                        <th>Compatible Django Versions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for python in python_versions %}
+                        <tr>
+                            <td>{{ python.verbose_name }}</td>
+                            <td>
+                                {% if python.compatibilities.exists %}
+                                    Django
+                                    {% for compat in python.compatibilities.all %}
+                                        {{ compat.django_version.version }}{% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    <em>No compatible Django versions found.</em>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="2">No compatibility data available.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Django-based Compatibility Table -->
+        <div x-show="base === 'django'" x-cloak>
+            <table class="table table-striped compatibility-table">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Django Version</th>
+                        <th>Compatible Python Versions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for django in django_versions %}
+                        <tr>
+                            <td>{{ django.verbose_name }}</td>
+                            <td>
+                                {% if django.compatibilities.exists %}
+                                    Python
+                                    {% for compat in django.compatibilities.all %}
+                                        {{ compat.python_version.version }}{% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    <em>No compatible Python versions found.</em>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="2">No compatibility data available.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Most popular Django packages/libraries </h2><small>By GitHub Stars</small>
+        <ol>
+            <li>Cookiecutter-django 12.3k</li>
+            <li>django-allauth 9.7k</li>
+            <li>django-debug-toolbar 8.1k</li>
+            <li>django-extensions 6.6k</li>
+            <li>django-oscar 6.3k</li>
+            <li>channels 6.1k</li>
+        </ol>
+    </div>
+
+
+
+
+{% endblock %}

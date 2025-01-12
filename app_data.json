@@ -1,0 +1,368 @@
+[
+{
+  "model": "matrix.djangoversion",
+  "pk": 2,
+  "fields": {
+    "version": "5.1",
+    "release_date": "2025-01-11",
+    "end_of_life_date": null
+  }
+},
+{
+  "model": "matrix.djangoversion",
+  "pk": 3,
+  "fields": {
+    "version": "4.2",
+    "release_date": "2025-01-09",
+    "end_of_life_date": "2026-01-11"
+  }
+},
+{
+  "model": "matrix.djangoversion",
+  "pk": 4,
+  "fields": {
+    "version": "1.11",
+    "release_date": "2015-01-11",
+    "end_of_life_date": null
+  }
+},
+{
+  "model": "matrix.djangoversion",
+  "pk": 5,
+  "fields": {
+    "version": "5.0",
+    "release_date": "2025-01-10",
+    "end_of_life_date": null
+  }
+},
+{
+  "model": "matrix.djangoversion",
+  "pk": 6,
+  "fields": {
+    "version": "4.1",
+    "release_date": "2025-01-08",
+    "end_of_life_date": null
+  }
+},
+{
+  "model": "matrix.djangoversion",
+  "pk": 7,
+  "fields": {
+    "version": "4.0",
+    "release_date": "2025-01-07",
+    "end_of_life_date": null
+  }
+},
+{
+  "model": "matrix.djangoversion",
+  "pk": 8,
+  "fields": {
+    "version": "3.2",
+    "release_date": "2025-01-06",
+    "end_of_life_date": null
+  }
+},
+{
+  "model": "matrix.pythonversion",
+  "pk": 1,
+  "fields": {
+    "version": "3.12",
+    "release_date": "2025-01-11",
+    "end_of_life_date": null
+  }
+},
+{
+  "model": "matrix.pythonversion",
+  "pk": 2,
+  "fields": {
+    "version": "3.11",
+    "release_date": "2024-01-11",
+    "end_of_life_date": null
+  }
+},
+{
+  "model": "matrix.pythonversion",
+  "pk": 3,
+  "fields": {
+    "version": "2.7",
+    "release_date": "2015-01-11",
+    "end_of_life_date": null
+  }
+},
+{
+  "model": "matrix.pythonversion",
+  "pk": 4,
+  "fields": {
+    "version": "3.10",
+    "release_date": "2023-01-11",
+    "end_of_life_date": null
+  }
+},
+{
+  "model": "matrix.pythonversion",
+  "pk": 5,
+  "fields": {
+    "version": "3.9",
+    "release_date": "2023-01-09",
+    "end_of_life_date": null
+  }
+},
+{
+  "model": "matrix.pythonversion",
+  "pk": 6,
+  "fields": {
+    "version": "3.8",
+    "release_date": "2023-01-08",
+    "end_of_life_date": null
+  }
+},
+{
+  "model": "matrix.pythonversion",
+  "pk": 7,
+  "fields": {
+    "version": "3.7",
+    "release_date": "2023-01-07",
+    "end_of_life_date": null
+  }
+},
+{
+  "model": "matrix.pythonversion",
+  "pk": 8,
+  "fields": {
+    "version": "3.6",
+    "release_date": "2023-01-06",
+    "end_of_life_date": null
+  }
+},
+{
+  "model": "matrix.compatibility",
+  "pk": 3,
+  "fields": {
+    "django_version": 2,
+    "python_version": 1,
+    "package": null,
+    "version": null,
+    "notes": ""
+  }
+},
+{
+  "model": "matrix.compatibility",
+  "pk": 4,
+  "fields": {
+    "django_version": 2,
+    "python_version": 2,
+    "package": null,
+    "version": null,
+    "notes": ""
+  }
+},
+{
+  "model": "matrix.compatibility",
+  "pk": 5,
+  "fields": {
+    "django_version": 3,
+    "python_version": 2,
+    "package": null,
+    "version": null,
+    "notes": ""
+  }
+},
+{
+  "model": "matrix.compatibility",
+  "pk": 6,
+  "fields": {
+    "django_version": 4,
+    "python_version": 3,
+    "package": null,
+    "version": null,
+    "notes": ""
+  }
+},
+{
+  "model": "matrix.compatibility",
+  "pk": 7,
+  "fields": {
+    "django_version": 2,
+    "python_version": 4,
+    "package": null,
+    "version": null,
+    "notes": ""
+  }
+},
+{
+  "model": "matrix.compatibility",
+  "pk": 8,
+  "fields": {
+    "django_version": 6,
+    "python_version": 2,
+    "package": null,
+    "version": null,
+    "notes": ""
+  }
+},
+{
+  "model": "matrix.compatibility",
+  "pk": 9,
+  "fields": {
+    "django_version": 3,
+    "python_version": 5,
+    "package": null,
+    "version": null,
+    "notes": ""
+  }
+},
+{
+  "model": "matrix.compatibility",
+  "pk": 10,
+  "fields": {
+    "django_version": 6,
+    "python_version": 5,
+    "package": null,
+    "version": null,
+    "notes": ""
+  }
+},
+{
+  "model": "matrix.compatibility",
+  "pk": 11,
+  "fields": {
+    "django_version": 7,
+    "python_version": 5,
+    "package": null,
+    "version": null,
+    "notes": ""
+  }
+},
+{
+  "model": "matrix.compatibility",
+  "pk": 12,
+  "fields": {
+    "django_version": 8,
+    "python_version": 5,
+    "package": null,
+    "version": null,
+    "notes": ""
+  }
+},
+{
+  "model": "matrix.compatibility",
+  "pk": 14,
+  "fields": {
+    "django_version": 6,
+    "python_version": 6,
+    "package": null,
+    "version": null,
+    "notes": ""
+  }
+},
+{
+  "model": "matrix.compatibility",
+  "pk": 15,
+  "fields": {
+    "django_version": 7,
+    "python_version": 6,
+    "package": null,
+    "version": null,
+    "notes": ""
+  }
+},
+{
+  "model": "matrix.compatibility",
+  "pk": 16,
+  "fields": {
+    "django_version": 8,
+    "python_version": 6,
+    "package": null,
+    "version": null,
+    "notes": ""
+  }
+},
+{
+  "model": "matrix.compatibility",
+  "pk": 17,
+  "fields": {
+    "django_version": 8,
+    "python_version": 7,
+    "package": null,
+    "version": null,
+    "notes": ""
+  }
+},
+{
+  "model": "matrix.compatibility",
+  "pk": 18,
+  "fields": {
+    "django_version": 8,
+    "python_version": 8,
+    "package": null,
+    "version": null,
+    "notes": ""
+  }
+},
+{
+  "model": "matrix.compatibility",
+  "pk": 19,
+  "fields": {
+    "django_version": 5,
+    "python_version": 1,
+    "package": null,
+    "version": null,
+    "notes": ""
+  }
+},
+{
+  "model": "matrix.compatibility",
+  "pk": 20,
+  "fields": {
+    "django_version": 5,
+    "python_version": 2,
+    "package": null,
+    "version": null,
+    "notes": ""
+  }
+},
+{
+  "model": "matrix.compatibility",
+  "pk": 21,
+  "fields": {
+    "django_version": 5,
+    "python_version": 4,
+    "package": null,
+    "version": null,
+    "notes": ""
+  }
+},
+{
+  "model": "matrix.compatibility",
+  "pk": 22,
+  "fields": {
+    "django_version": 3,
+    "python_version": 1,
+    "package": null,
+    "version": null,
+    "notes": ""
+  }
+},
+{
+  "model": "matrix.compatibility",
+  "pk": 23,
+  "fields": {
+    "django_version": 3,
+    "python_version": 4,
+    "package": null,
+    "version": null,
+    "notes": ""
+  }
+},
+{
+  "model": "matrix.compatibility",
+  "pk": 24,
+  "fields": {
+    "django_version": 3,
+    "python_version": 6,
+    "package": null,
+    "version": null,
+    "notes": ""
+  }
+}
+]

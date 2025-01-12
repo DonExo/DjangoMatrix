@@ -1,0 +1,21 @@
+.venv/
+
+# Byte-compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django specific
+*.log
+db.sqlite3
+media/
+staticfiles/
+
+# Secret and configuration files
+.env
+
+# macOS specific files
+.DS_Store
+
+# PyCharm specific files
+.idea/
