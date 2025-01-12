@@ -1,8 +1,9 @@
 from collections import defaultdict
 
 from django.db.models import Prefetch
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
+from django.views.decorators.http import require_GET
 
 from .models import DjangoVersion, PythonVersion, Package, Compatibility
 
@@ -35,3 +36,17 @@ def index(request):
 def package_details(request, slug):
     package = get_object_or_404(Package, slug=slug)
     return render(request, 'matrix/package_details.html', {'package': package})
+
+def package_search(request):
+    query = request.GET.get('q', '').strip()
+    results = []
+    if query:
+        packages = Package.objects.filter(name__icontains=query)[:10]
+        for package in packages:
+            results.append({
+                'id': package.id,
+                'name': package.name,
+                'slug': package.slug,
+            })
+        print(packages)
+    return JsonResponse({'results': results})
