@@ -135,6 +135,78 @@
   }
 },
 {
+  "model": "matrix.package",
+  "pk": 1,
+  "fields": {
+    "name": "Cookiecutter Django",
+    "slug": "cookiecutter-django",
+    "description": "Cookiecutter Django is a framework for jumpstarting production-ready Django projects quickly.",
+    "repository_url": "https://github.com/cookiecutter/cookiecutter-django",
+    "documentation_url": "https://cookiecutter-django.readthedocs.io/en/latest/",
+    "popularity_metric": 12309
+  }
+},
+{
+  "model": "matrix.package",
+  "pk": 2,
+  "fields": {
+    "name": "Django Allauth",
+    "slug": "django-allauth",
+    "description": "Integrated set of Django applications addressing authentication, registration, account management as well as 3rd party (social) account authentication.",
+    "repository_url": "https://github.com/pennersr/django-allauth",
+    "documentation_url": "https://docs.allauth.org/en/latest/",
+    "popularity_metric": 9689
+  }
+},
+{
+  "model": "matrix.package",
+  "pk": 3,
+  "fields": {
+    "name": "Django Debug Toolbar",
+    "slug": "django-debug-toolbar",
+    "description": "The Django Debug Toolbar is a configurable set of panels that display various debug information about the current request/response and when clicked, display more details about the panel's content.",
+    "repository_url": "https://github.com/django-commons/django-debug-toolbar",
+    "documentation_url": "https://django-debug-toolbar.readthedocs.io/en/latest/",
+    "popularity_metric": 8141
+  }
+},
+{
+  "model": "matrix.package",
+  "pk": 4,
+  "fields": {
+    "name": "Django-extensions",
+    "slug": "django-extensions",
+    "description": "Django Extensions is a collection of custom extensions for the Django Framework.",
+    "repository_url": "https://github.com/django-extensions/django-extensions",
+    "documentation_url": "https://django-extensions.readthedocs.io/en/latest/",
+    "popularity_metric": 6608
+  }
+},
+{
+  "model": "matrix.package",
+  "pk": 5,
+  "fields": {
+    "name": "Django Oscar",
+    "slug": "django-oscar",
+    "description": "Oscar is an e-commerce framework for Django designed for building domain-driven sites. It is structured such that any part of the core functionality can be customised to suit the needs of your project. This allows a wide range of e-commerce requirements to be handled, from large-scale B2C sites to complex B2B sites rich in domain-specific business logic.",
+    "repository_url": "https://github.com/django-oscar/django-oscar",
+    "documentation_url": "https://django-oscar.readthedocs.io/en/latest/",
+    "popularity_metric": 6315
+  }
+},
+{
+  "model": "matrix.package",
+  "pk": 6,
+  "fields": {
+    "name": "Django Channels",
+    "slug": "django-channels",
+    "description": "Channels augments Django to bring WebSocket, long-poll HTTP, task offloading and other async support to your code, using familiar Django design patterns and a flexible underlying framework that lets you not only customize behaviours but also write support for your own protocols and needs.",
+    "repository_url": "https://github.com/django/channels",
+    "documentation_url": "https://channels.readthedocs.io/en/latest/",
+    "popularity_metric": 6144
+  }
+},
+{
   "model": "matrix.compatibility",
   "pk": 3,
   "fields": {

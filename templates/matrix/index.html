@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load number_format %}
 
 {% block content %}
 
@@ -98,15 +99,14 @@
     </div>
 
     <div class="container">
-        <h2>Most popular Django packages/libraries </h2><small>By GitHub Stars</small>
+        <h2>10 most popular Django packages/libraries </h2><small>By GitHub Stars</small>
         <ol>
-            <li>Cookiecutter-django 12.3k</li>
-            <li>django-allauth 9.7k</li>
-            <li>django-debug-toolbar 8.1k</li>
-            <li>django-extensions 6.6k</li>
-            <li>django-oscar 6.3k</li>
-            <li>channels 6.1k</li>
+            {% for package in most_popular_packages %}
+                <li><a href="{% url 'package-details' package.slug %}">{{ package }}</a>  - {{ package.popularity_metric|round_to_hundreds }}</li>
+            {% endfor %}
         </ol>
+
+
     </div>
 
 
