@@ -1,3 +1,4 @@
-from django.test import TestCase
+# Very basic test
 
-# Create your tests here.
+def test_basic():
+    assert 1 == 1

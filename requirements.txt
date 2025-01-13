@@ -1,2 +1,4 @@
 django==5.1.4
 gunicorn==23.0.0
+pytest==8.3.4
+pytest-django==4.9.0
