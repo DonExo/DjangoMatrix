@@ -1,7 +1,4 @@
-from collections import defaultdict
-
 from django.db.models import Prefetch
-from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 
 from .models import DjangoVersion, PythonVersion, Package, Compatibility
@@ -22,7 +19,7 @@ def index(request):
         )
     ).all()
 
-    packages = Package.objects.all()[:10]
+    packages = Package.objects.all()
 
     context = {
         'python_versions': python_versions,
