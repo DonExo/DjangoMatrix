@@ -39,10 +39,12 @@ class Package(models.Model):
     description = models.TextField()
     repository_url = models.URLField(max_length=500, null=True, blank=True)
     documentation_url = models.URLField(max_length=500, null=True, blank=True)
-    popularity_metric = models.PositiveIntegerField(null=True, blank=True)
+    metric_stars = models.PositiveIntegerField(null=True, blank=True)
+    metric_forks = models.PositiveIntegerField(null=True, blank=True)
+    metric_open_issues = models.PositiveIntegerField(null=True, blank=True)
 
     class Meta:
-        ordering = ('-popularity_metric', )
+        ordering = ('-metric_stars', )
 
     def __str__(self):
         return self.slug
@@ -53,10 +55,16 @@ class Package(models.Model):
         super().save(*args, **kwargs)
 
     @property
-    def format_popularity_metric(self):
-        if self.popularity_metric >= 1000:
-            return f"{round(self.popularity_metric / 1000, 1)}k"
-        return str(self.popularity_metric)
+    def format_metric_stars(self):
+        if self.metric_stars and self.metric_stars >= 1000:
+            return f"{round(self.metric_stars / 1000, 1)}k"
+        return str(self.metric_stars)
+
+    @property
+    def format_metric_forks(self):
+        if self.metric_forks and self.metric_forks >= 1000:
+            return f"{round(self.metric_forks / 1000, 1)}k"
+        return str(self.metric_forks)
 
 
 class Compatibility(models.Model):

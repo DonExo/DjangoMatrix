@@ -102,7 +102,7 @@
         <h2>10 most popular Django packages/libraries </h2><small>By GitHub Stars</small>
         <ol>
             {% for package in most_popular_packages %}
-                <li><a href="{% url 'package-details' package.slug %}">{{ package }}</a>  - {{ package.popularity_metric|round_to_hundreds }}</li>
+                <li><a href="{% url 'package-details' package.slug %}">{{ package }}</a>  - {{ package.metric_stars|round_to_hundreds }}</li>
             {% endfor %}
         </ol>
 

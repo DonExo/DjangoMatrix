@@ -4,5 +4,7 @@
     <h1>Name: {{ package.name }}</h1>
     <h2>Description: {{ package.description }}</h2>
     <h3>Repository URL: <a href="{{ package.repository_url }}">{{ package.repository_url }}</a> </h3>
-    <h4>Times Starred: {{ package.popularity_metric }}⭐</h4>
+    <h4>Times Starred: {{ package.format_metric_stars }}⭐</h4>
+    <h4>Times Forked: {{ package.format_metric_forks }}🔱</h4>
+    <h4>Open Issues: {{ package.metric_open_issues }}</h4>
 {% endblock %}

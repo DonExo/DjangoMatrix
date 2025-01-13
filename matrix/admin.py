@@ -27,4 +27,4 @@ class CompatibilityAdmin(admin.ModelAdmin):
 @admin.register(Package)
 class PackageAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
-    list_display = ('id', 'name', 'slug', 'popularity_metric')
+    list_display = ('id', 'name', 'slug', 'metric_stars', 'metric_forks')
