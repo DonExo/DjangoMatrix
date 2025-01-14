@@ -16,10 +16,8 @@ SECRET_KEY = env("SECRET_KEY", default="django-insecure-xnv5ffvt@8)6%8*3j4f6&5qt
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',

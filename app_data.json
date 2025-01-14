@@ -143,7 +143,9 @@
     "description": "Cookiecutter Django is a framework for jumpstarting production-ready Django projects quickly.",
     "repository_url": "https://github.com/cookiecutter/cookiecutter-django",
     "documentation_url": "https://cookiecutter-django.readthedocs.io/en/latest/",
-    "popularity_metric": 12309
+    "metric_stars": 12312,
+    "metric_forks": 2929,
+    "metric_open_issues": 96
   }
 },
 {
@@ -155,7 +157,9 @@
     "description": "Integrated set of Django applications addressing authentication, registration, account management as well as 3rd party (social) account authentication.",
     "repository_url": "https://github.com/pennersr/django-allauth",
     "documentation_url": "https://docs.allauth.org/en/latest/",
-    "popularity_metric": 9689
+    "metric_stars": 9691,
+    "metric_forks": 3063,
+    "metric_open_issues": 1
   }
 },
 {
@@ -167,7 +171,9 @@
     "description": "The Django Debug Toolbar is a configurable set of panels that display various debug information about the current request/response and when clicked, display more details about the panel's content.",
     "repository_url": "https://github.com/django-commons/django-debug-toolbar",
     "documentation_url": "https://django-debug-toolbar.readthedocs.io/en/latest/",
-    "popularity_metric": 8141
+    "metric_stars": 8143,
+    "metric_forks": 1050,
+    "metric_open_issues": 66
   }
 },
 {
@@ -179,7 +185,9 @@
     "description": "Django Extensions is a collection of custom extensions for the Django Framework.",
     "repository_url": "https://github.com/django-extensions/django-extensions",
     "documentation_url": "https://django-extensions.readthedocs.io/en/latest/",
-    "popularity_metric": 6608
+    "metric_stars": 6610,
+    "metric_forks": 1158,
+    "metric_open_issues": 234
   }
 },
 {
@@ -191,7 +199,9 @@
     "description": "Oscar is an e-commerce framework for Django designed for building domain-driven sites. It is structured such that any part of the core functionality can be customised to suit the needs of your project. This allows a wide range of e-commerce requirements to be handled, from large-scale B2C sites to complex B2B sites rich in domain-specific business logic.",
     "repository_url": "https://github.com/django-oscar/django-oscar",
     "documentation_url": "https://django-oscar.readthedocs.io/en/latest/",
-    "popularity_metric": 6315
+    "metric_stars": 6316,
+    "metric_forks": 2241,
+    "metric_open_issues": 130
   }
 },
 {
@@ -203,7 +213,121 @@
     "description": "Channels augments Django to bring WebSocket, long-poll HTTP, task offloading and other async support to your code, using familiar Django design patterns and a flexible underlying framework that lets you not only customize behaviours but also write support for your own protocols and needs.",
     "repository_url": "https://github.com/django/channels",
     "documentation_url": "https://channels.readthedocs.io/en/latest/",
-    "popularity_metric": 6144
+    "metric_stars": 6146,
+    "metric_forks": 801,
+    "metric_open_issues": 102
+  }
+},
+{
+  "model": "matrix.package",
+  "pk": 7,
+  "fields": {
+    "name": "Django Cors Headers",
+    "slug": "django-cors-headers",
+    "description": "A Django App that adds Cross-Origin Resource Sharing (CORS) headers to responses. This allows in-browser requests to your Django application from other origins.",
+    "repository_url": "https://github.com/adamchainz/django-cors-headers",
+    "documentation_url": "https://pypi.org/project/django-cors-headers/",
+    "metric_stars": 5414,
+    "metric_forks": 535,
+    "metric_open_issues": 5
+  }
+},
+{
+  "model": "matrix.package",
+  "pk": 8,
+  "fields": {
+    "name": "Django Crispy Forms",
+    "slug": "django-crispy-forms",
+    "description": "he best way to have Django DRY forms. Build programmatic reusable layouts out of components, having full control of the rendered HTML without writing HTML in templates. All this without breaking the standard way of doing things in Django, so it plays nice with any other form application.",
+    "repository_url": "https://github.com/django-crispy-forms/django-crispy-forms",
+    "documentation_url": "https://django-crispy-forms.readthedocs.io/en/latest/",
+    "metric_stars": 5052,
+    "metric_forks": 732,
+    "metric_open_issues": 65
+  }
+},
+{
+  "model": "matrix.package",
+  "pk": 9,
+  "fields": {
+    "name": "Django Filter",
+    "slug": "django-filter",
+    "description": "Django-filter is a reusable Django application allowing users to declaratively add dynamic QuerySet filtering from URL parameters.",
+    "repository_url": "https://github.com/carltongibson/django-filter",
+    "documentation_url": "https://django-filter.readthedocs.io/en/main/",
+    "metric_stars": 4507,
+    "metric_forks": 771,
+    "metric_open_issues": 74
+  }
+},
+{
+  "model": "matrix.package",
+  "pk": 10,
+  "fields": {
+    "name": "Django Environ",
+    "slug": "django-environ",
+    "description": "django-environ is the Python package that allows you to use Twelve-factor methodology to configure your Django application with environment variables.",
+    "repository_url": "https://github.com/joke2k/django-environ",
+    "documentation_url": "https://django-environ.rtfd.org/",
+    "metric_stars": 3040,
+    "metric_forks": 317,
+    "metric_open_issues": 75
+  }
+},
+{
+  "model": "matrix.package",
+  "pk": 11,
+  "fields": {
+    "name": "Django Redis",
+    "slug": "django-redis",
+    "description": "django-redis is a BSD licensed, full featured Redis cache and session backend for Django.",
+    "repository_url": "https://github.com/jazzband/django-redis",
+    "documentation_url": "https://github.com/jazzband/django-redis",
+    "metric_stars": 2918,
+    "metric_forks": 429,
+    "metric_open_issues": 60
+  }
+},
+{
+  "model": "matrix.package",
+  "pk": 12,
+  "fields": {
+    "name": "Django Storages",
+    "slug": "django-storages",
+    "description": "django-storages is a project to provide a variety of storage backends in a single library.",
+    "repository_url": "https://github.com/jschneier/django-storages",
+    "documentation_url": "https://django-storages.readthedocs.io/en/latest/",
+    "metric_stars": 2793,
+    "metric_forks": 867,
+    "metric_open_issues": 135
+  }
+},
+{
+  "model": "matrix.package",
+  "pk": 13,
+  "fields": {
+    "name": "DRF spectacular",
+    "slug": "drf-spectacular",
+    "description": "Sane and flexible OpenAPI (3.0.3 & 3.1) schema generation for Django REST framework.",
+    "repository_url": "https://github.com/tfranzel/drf-spectacular",
+    "documentation_url": "https://drf-spectacular.readthedocs.io/",
+    "metric_stars": 2464,
+    "metric_forks": 272,
+    "metric_open_issues": 158
+  }
+},
+{
+  "model": "matrix.package",
+  "pk": 14,
+  "fields": {
+    "name": "Pytest Django",
+    "slug": "pytest-django",
+    "description": "pytest-django allows you to test your Django project/applications with the pytest testing tool.",
+    "repository_url": "https://github.com/pytest-dev/pytest-django",
+    "documentation_url": "https://pytest-django.readthedocs.io/",
+    "metric_stars": 1410,
+    "metric_forks": 345,
+    "metric_open_issues": 185
   }
 },
 {

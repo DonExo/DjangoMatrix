@@ -3,6 +3,27 @@
 
 {% block content %}
 
+    <div class="container" style="position: relative;" x-data="searchComponent()" @click.away="clearAll()">
+        <h1>Search for a Package</h1>
+
+        <!-- Search Input -->
+        <input x-model="query" @input="fetchPackages" type="text"
+               class="form-control" placeholder="Search for a package/library name...">
+
+        <!-- Results Table -->
+        <template x-if="results.length > 0">
+          <table class="table table-striped mt-1 autocomplete-dropdown">
+            <tbody>
+              <template x-for="pkg in results" :key="pkg.id">
+                <tr class="autocomplete-row" @click="selectPackage(pkg)">
+                  <td x-text="pkg.name"></td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </template>
+      </div>
+
     <div class="container" x-data="{ base: 'python' }">
         <h1>Django Matrix Compatibility</h1><br/>
 
@@ -109,7 +130,37 @@
 
     </div>
 
-
+    <script>
+        function searchComponent() {
+          return {
+            query: '',
+            results: [],
+            fetchPackages() {
+              // if query is empty, clear the results and skip the request
+              if (this.query.length < 1) {
+                this.results = [];
+                return;
+              }
+              fetch(`/packages/search/?q=${encodeURIComponent(this.query)}`)
+                .then(response => response.json())
+                .then(data => {
+                  this.results = data.results;
+                })
+                .catch(error => {
+                  console.error('Error fetching packages:', error);
+                  this.results = [];
+                });
+            },
+            selectPackage(pkg) {
+              window.location.href = `/packages/${pkg.slug}/`;
+            },
+            clearAll() {
+                this.query = '';
+                this.results = [];
+            }
+          }
+        }
+      </script>
 
 
 {% endblock %}

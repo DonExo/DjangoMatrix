@@ -67,9 +67,25 @@ class Package(models.Model):
         return str(self.metric_forks)
 
 
+class PackageVersion(models.Model):
+    package = models.ForeignKey(Package, on_delete=models.CASCADE)
+    version = models.CharField(max_length=10, unique=True)
+    release_date = models.DateField(auto_now=False, auto_now_add=False, null=True, blank=True)
+    django_compatibility = models.ManyToManyField(DjangoVersion, blank=True)
+    python_compatibility = models.ManyToManyField(PythonVersion, blank=True)
+
+    class Meta:
+        ordering = ('-release_date', )
+
+    def __str__(self):
+        return self.version
+
+    def verbose_name(self):
+        return f"Package v{self.version}"
+
 class Compatibility(models.Model):
     django_version = models.ForeignKey(DjangoVersion, on_delete=models.CASCADE, related_name="compatibilities")
-    python_version = models.ForeignKey(PythonVersion, on_delete=models.CASCADE, related_name="compatibilities")
+    python_version = models.ForeignKey(PythonVersion, on_delete=models.CASCADE, related_name="compatibilities", null=True, blank=True)
     package = models.ForeignKey(Package, on_delete=models.CASCADE, null=True, blank=True)
     version = models.CharField(max_length=100, help_text=_("example: 3.2.5"), null=True, blank=True)
     notes = models.TextField(null=True, blank=True)
