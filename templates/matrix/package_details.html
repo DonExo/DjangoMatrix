@@ -1,12 +1,18 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block content %}
     <div class="container">
+
+        <div class="alert alert-success" role="alert">
+            <b>Note:</b> The github metrics are being updated daily.
+        </div>
+
         <h1>Name: {{ package.name }}</h1>
         <h2>Description: {{ package.description }}</h2>
         <h3>Repository URL: <a href="{{ package.repository_url }}" target="_blank">{{ package.repository_url }}</a> </h3>
-        <h4>Times Starred: {{ package.format_metric_stars }}⭐</h4>
-        <h4>Times Forked: {{ package.format_metric_forks }}🔱</h4>
-        <h4>Open Issues: {{ package.metric_open_issues }}</h4>
+        <h4>⭐ Stars: {{ package.metric_stars|intcomma }}</h4>
+        <h4>🔱 Forks: {{ package.metric_forks|intcomma }}</h4>
+        <h4>📁 Open Issues: {{ package.metric_open_issues }}</h4>
     </div>
 {% endblock %}
