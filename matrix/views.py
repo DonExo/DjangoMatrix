@@ -1,7 +1,8 @@
+from django.conf import settings
+from django.core.paginator import Paginator
 from django.db.models import Prefetch
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
-from django.views.decorators.http import require_GET
 
 from .models import DjangoVersion, PythonVersion, Package, Compatibility
 
@@ -31,9 +32,21 @@ def index(request):
     return render(request, "matrix/index.html", context)
 
 
+def packages(request):
+    queryset = Package.objects.all()
+    paginator = Paginator(queryset, settings.DEFAULT_NUMBER_OF_PACKAGES_ON_PAGE)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {
+        'page_obj': page_obj,
+    }
+    return render(request, 'matrix/packages.html', context)
+
+
 def package_details(request, slug):
     package = get_object_or_404(Package, slug=slug)
     return render(request, 'matrix/package_details.html', {'package': package})
+
 
 def package_search(request):
     query = request.GET.get('q', '').strip()

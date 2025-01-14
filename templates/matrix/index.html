@@ -3,29 +3,29 @@
 
 {% block content %}
 
-    <div class="container" style="position: relative;" x-data="searchComponent()" @click.away="clearAll()">
-        <h1>Search for a Package</h1>
-
-        <!-- Search Input -->
-        <input x-model="query" @input="fetchPackages" type="text"
-               class="form-control" placeholder="Search for a package/library name...">
-
-        <!-- Results Table -->
-        <template x-if="results.length > 0">
-          <table class="table table-striped mt-1 autocomplete-dropdown">
-            <tbody>
-              <template x-for="pkg in results" :key="pkg.id">
-                <tr class="autocomplete-row" @click="selectPackage(pkg)">
-                  <td x-text="pkg.name"></td>
-                </tr>
-              </template>
-            </tbody>
-          </table>
-        </template>
-      </div>
-
     <div class="container" x-data="{ base: 'python' }">
         <h1>Django Matrix Compatibility</h1><br/>
+
+        <div class="container" style="position: relative; margin-bottom: 20px;" x-data="searchComponent()" @click.away="clearAll()">
+            <h1>Search for a Package</h1>
+
+            <!-- Search Input -->
+            <input x-model="query" @input="fetchPackages" type="text"
+                   class="form-control" placeholder="Search for a package/library name...">
+
+            <!-- Results Table -->
+            <template x-if="results.length > 0">
+              <table class="table table-striped mt-1 autocomplete-dropdown">
+                <tbody>
+                  <template x-for="pkg in results" :key="pkg.id">
+                    <tr class="autocomplete-row" @click="selectPackage(pkg)">
+                      <td x-text="pkg.name"></td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </template>
+        </div>
 
         <!-- Toggle Form -->
         <form class="toggle-form">
@@ -126,8 +126,7 @@
                 <li><a href="{% url 'package-details' package.slug %}">{{ package }}</a>  - {{ package.metric_stars|round_to_hundreds }}</li>
             {% endfor %}
         </ol>
-
-
+        <a href="{% url 'packages' %}">List all packages</a>
     </div>
 
     <script>

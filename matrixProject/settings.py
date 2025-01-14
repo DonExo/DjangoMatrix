@@ -129,3 +129,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+DEFAULT_NUMBER_OF_PACKAGES_ON_PAGE = env.int('NUMBER_OF_PACKAGES_ON_PAGE', default=100)
