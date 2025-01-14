@@ -67,6 +67,20 @@ class Package(models.Model):
         return str(self.metric_forks)
 
 
+class PackageRepoStats(models.Model):
+    package = models.ForeignKey(Package, on_delete=models.CASCADE, related_name='repo_stats')
+    metric_stars = models.PositiveIntegerField(default=0)
+    metric_forks = models.PositiveIntegerField(default=0)
+    metric_open_issues = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Repo stats for {self.package.name}"
+
+    class Meta:
+        verbose_name_plural = "Package repo stats"
+
+
 class PackageVersion(models.Model):
     package = models.ForeignKey(Package, on_delete=models.CASCADE)
     version = models.CharField(max_length=10, unique=True)
