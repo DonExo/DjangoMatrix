@@ -1,3 +1,6 @@
+from urllib.parse import urlparse
+
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
@@ -96,6 +99,30 @@ class PackageVersion(models.Model):
 
     def verbose_name(self):
         return f"Package v{self.version}"
+
+
+class PackageRequest(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    repository_url = models.URLField()
+    documentation_url = models.URLField(null=True, blank=True)
+    submitted_at = models.DateTimeField(auto_now_add=True)
+    is_approved = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Package Request: {self.name}"
+
+    def create_package_from_request(self):
+        slug = slugify(self.name)
+        if Package.objects.filter(slug=slug).exists():
+            raise ValidationError(f"Package {slug} already exists")
+        Package.objects.create(
+            name=self.name,
+            description=self.description,
+            repository_url=self.repository_url,
+            documentation_url=self.documentation_url,
+        )
+
 
 class Compatibility(models.Model):
     django_version = models.ForeignKey(DjangoVersion, on_delete=models.CASCADE, related_name="compatibilities")

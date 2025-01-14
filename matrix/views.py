@@ -1,9 +1,11 @@
 from django.conf import settings
+from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Prefetch
 from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 
+from .forms import PackageRequestForm
 from .models import DjangoVersion, PythonVersion, Package, Compatibility
 
 
@@ -40,7 +42,7 @@ def packages(request):
     context = {
         'page_obj': page_obj,
     }
-    return render(request, 'matrix/packages.html', context)
+    return render(request, 'matrix/package_list.html', context)
 
 
 def package_details(request, slug):
@@ -60,3 +62,19 @@ def package_search(request):
                 'slug': package.slug,
             })
     return JsonResponse({'results': results})
+
+
+def package_add(request):
+    if request.method == "POST":
+        form = PackageRequestForm(request.POST)
+        if form.is_valid():
+            package_request = form.save(commit=False)
+            package_request.save()
+            messages.success(request, "Your package submission has been received. Thank you!")
+            return redirect('packages')
+        else:
+            form = PackageRequestForm(request.POST)
+    else:
+        form = PackageRequestForm()
+
+    return render(request, 'matrix/package_add.html', {'form': form})

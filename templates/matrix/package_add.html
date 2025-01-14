@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="mb-4">Package Submission</h1>
+        <form method="post" class="needs-validation" novalidate>
+            <p>
+                Looking for a specific package?
+                <br/>If you can't find the package you're looking for, feel free to submit a request using the form below. Our team will review your submission promptly and ensure it meets the required standards.
+                <br/>Thank you for contributing to our growing collection!
+            </p>
+
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+
+            {% csrf_token %}
+            <form method="post" class="needs-validation" novalidate>
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </form>
+    </div>
+{% endblock %}

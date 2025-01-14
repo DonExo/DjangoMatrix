@@ -30,10 +30,15 @@ INSTALLED_APPS = [
 
     # Third party apps
     'django_q',
+    'crispy_forms',
+    'crispy_bootstrap5',
 
     # Local apps
     'matrix',
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 Q_CLUSTER = {
     'name': 'matrixProject',
