@@ -21,7 +21,7 @@ def index(request):
         )
     ).all()
 
-    packages = Package.objects.all()
+    packages = Package.objects.all()[:10]
 
     context = {
         'python_versions': python_versions,
@@ -39,7 +39,7 @@ def package_search(request):
     query = request.GET.get('q', '').strip()
     results = []
     if query:
-        packages = Package.objects.filter(name__icontains=query)[:10]
+        packages = Package.objects.filter(name__icontains=query)
         for package in packages:
             results.append({
                 'id': package.id,
