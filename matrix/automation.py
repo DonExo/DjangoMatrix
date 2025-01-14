@@ -7,7 +7,7 @@ from .models import Package, PackageRepoStats
 from django.conf import settings
 
 
-def get_repo_stars():
+def get_repo_stats():
     """Fetch the metrics from GitHub for all the packages in the system and update it. """
     for package in Package.objects.all():
         try:
