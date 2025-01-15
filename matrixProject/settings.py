@@ -29,7 +29,6 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
 
     # Third party apps
-    'django_q',
     'crispy_forms',
     'crispy_bootstrap5',
 
@@ -39,19 +38,6 @@ INSTALLED_APPS = [
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
-
-Q_CLUSTER = {
-    'name': 'matrixProject',
-    'workers': 8,
-    'recycle': 500,
-    'timeout': 60,
-    'compress': True,
-    'cpu_affinity': 1,
-    'save_limit': 250,
-    'queue_limit': 500,
-    'label': 'Django Q',
-    'orm': 'default',
-}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
