@@ -19,3 +19,5 @@ staticfiles/
 
 # PyCharm specific files
 .idea/
+
+cron_log.txt
