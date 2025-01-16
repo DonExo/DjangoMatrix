@@ -4,17 +4,18 @@
 {% block content %}
     <div class="container">
 
-        <div class="alert alert-success" role="alert">
-            <b>Note:</b> The github metrics are being updated daily.
-        </div>
-
-        <h1>Name: {{ package.name }}</h1>
-        <h2>Description: {{ package.description }}</h2>
-        <h3>Repository URL: <a href="{{ package.repository_url }}" target="_blank">{{ package.repository_url }}</a> </h3>
-        <h4>⭐ Stars: {{ package.metric_stars|intcomma }}</h4>
-        <h4>🔱 Forks: {{ package.metric_forks|intcomma }}</h4>
-        <h4>📁 Open Issues: {{ package.metric_open_issues }}</h4>
+        <h2>Name: {{ package.name }}</h2>
+        <h3>Description: {{ package.description }}</h3>
+        <h4>Repository URL: <a href="{{ package.repository_url }}" target="_blank">{{ package.repository_url }}</a> </h4>
+        <h4>Documentation URL: <a href="{{ package.documentation_url }}" target="_blank">{{ package.documentation_url }}</a> </h4>
+        <h5>⭐ Stars: {{ package.metric_stars|intcomma }}</h5>
+        <h5>🔱 Forks: {{ package.metric_forks|intcomma }}</h5>
+        <h5>📁 Open Issues: {{ package.metric_open_issues }}</h5>
     </div>
 
 {#    <img src="{% url 'plot_github_metrics' %}" alt="GitHub Metrics Plot">#}
+
+    <div class="info-message bg-light text-success p-1 alert alert-success">
+        <p class="text-center" style="margin-bottom: 0;"><b>Note:</b> The GitHub metrics are being updated daily.</p>
+    </div>
 {% endblock %}
