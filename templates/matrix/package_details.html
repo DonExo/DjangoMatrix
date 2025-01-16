@@ -2,20 +2,72 @@
 {% load humanize %}
 
 {% block content %}
-    <div class="container">
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-success text-white">
+            <h2 class="mb-0">{{ package.name }}</h2>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Description:</h5>
+            <p class="card-text">{{ package.description }}</p>
 
-        <h2>Name: {{ package.name }}</h2>
-        <h3>Description: {{ package.description }}</h3>
-        <h4>Repository URL: <a href="{{ package.repository_url }}" target="_blank">{{ package.repository_url }}</a> </h4>
-        <h4>Documentation URL: <a href="{{ package.documentation_url }}" target="_blank">{{ package.documentation_url }}</a> </h4>
-        <h5>⭐ Stars: {{ package.metric_stars|intcomma }}</h5>
-        <h5>🔱 Forks: {{ package.metric_forks|intcomma }}</h5>
-        <h5>📁 Open Issues: {{ package.metric_open_issues }}</h5>
+            <h5 class="card-title">Links:</h5>
+            <ul class="list-unstyled">
+                <li class="d-flex">
+                    <span class="fw-bold" style="width: 200px; text-align: left;">Repository URL:</span>
+                    <a href="{{ package.repository_url }}" class="ms-2 text-primary" target="_blank">{{ package.repository_url }}</a>
+                </li>
+                <li class="d-flex mt-2">
+                    <span class="fw-bold" style="width: 200px; text-align: left;">Documentation URL:</span>
+                    <a href="{{ package.documentation_url }}" class="ms-2 text-primary" target="_blank">{{ package.documentation_url }}</a>
+                </li>
+            </ul>
+
+            <h5 class="card-title">Metrics:</h5>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <i class="bi bi-star-fill text-warning"></i> <strong>Stars:</strong> {{ package.metric_stars }}
+                </li>
+                <li class="list-group-item">
+                    <i class="bi bi-git text-primary"></i> <strong>Forks:</strong> {{ package.metric_forks }}
+                </li>
+                <li class="list-group-item">
+                    <i class="bi bi-exclamation-circle text-danger"></i> <strong>Open Issues:</strong> {{ package.metric_open_issues }}
+                </li>
+            </ul>
+
+            <h5 class="card-title mt-4">Additional Information:</h5>
+            <ul>
+                <li><strong>Last Updated:</strong> {{ package.last_updated|date:"M d, Y" }}</li>
+                <li><strong>Installation:</strong> <code>pip install {{ package.name|slugify }}</code></li>
+            </ul>
+        </div>
+        <div class="card-footer bg-light">
+            <a href="{{ package.repository_url }}" class="btn btn-warning" target="_blank">
+                <i class="bi bi-star"></i> Star on GitHub
+            </a>
+            <a href="{{ package.repository_url }}/fork" class="btn btn-primary" target="_blank">
+                <i class="bi bi-git"></i> Fork on GitHub
+            </a>
+        </div>
     </div>
 
-{#    <img src="{% url 'plot_github_metrics' %}" alt="GitHub Metrics Plot">#}
-
-    <div class="info-message bg-light text-success p-1 alert alert-success">
-        <p class="text-center" style="margin-bottom: 0;"><b>Note:</b> The GitHub metrics are being updated daily.</p>
+    <!-- Related Packages -->
+    <div class="mt-5">
+        <h4>Related Packages</h4>
+        <div class="row">
+            {% for related_package in related_packages %}
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ related_package.name }}</h5>
+                        <p class="card-text">{{ related_package.description|truncatewords:15 }}</p>
+                        <a href="{% url 'package_details' related_package.slug %}" class="btn btn-outline-success">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
+</div>
 {% endblock %}
