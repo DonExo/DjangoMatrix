@@ -1,55 +1,66 @@
 <nav class="navbar navbar-expand-lg bg-success">
-  <div class="container-fluid d-flex justify-content-between">
-        <!-- Left Side: Logo and Links -->
-        <div class="d-flex">
-      <a class="navbar-brand" href="{% url 'index' %}">
-        <img src="https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-        Django Matrix
-      </a>
-      <ul class="navbar-nav ms-3">
+  <div class="container-fluid">
+    <!-- Navbar Brand -->
+    <a class="navbar-brand text-white" href="{% url 'index' %}">
+      <img src="https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+      Django Matrix
+    </a>
+
+    <!-- Navbar Toggler -->
+    <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar Content -->
+    <div class="collapse navbar-collapse  p-1 rounded" id="navbarContent">
+      <!-- Left Side Links -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'packages' %}">Packages</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
+{#        <li class="nav-item">#}
+{#          <a class="nav-link" href="#">Link</a>#}
+{#        </li>#}
       </ul>
-    </div>
-      
-        <!-- Center: Search Field -->
-        <div class="container" style="width: 40%" x-data="searchComponent()" @click.away="clearAll()">
-            <input x-model="query" @input="fetchPackages" type="search"
-                   class="form-control" placeholder="Search for a package/library name...">
 
-            <!-- Results Table -->
-            <template x-if="results.length > 0" >
-              <table class="table table-striped mt-1 autocomplete-dropdown">
-                <tbody>
-                  <template x-for="pkg in results" :key="pkg.id">
-                    <tr class="autocomplete-row" style="cursor: pointer;" @click="selectPackage(pkg)">
-                      <td x-text="pkg.name"></td>
-                    </tr>
-                  </template>
-                </tbody>
-              </table>
-            </template>
+      <!-- Search Field (Center) -->
+      <div class="d-flex w-100 justify-content-center my-2 my-lg-0">
+        <div class="container" style="max-width: 500px;" x-data="searchComponent()" @click.away="clearAll()">
+          <input x-model="query" @input="fetchPackages" type="search"
+                 class="form-control border border-success rounded" placeholder="Search for a package/library name...">
 
-            <!-- No Results Message -->
-            <template x-if="query && results.length === 0">
-                <div class="alert alert-warning mt-0 text-center autocomplete-dropdown">
-                    Not finding it? <a href="{% url 'package_add' %}" class="alert-link">Propose it here</a>.
-                </div>
-            </template>
+          <!-- Results Table -->
+          <template x-if="results.length > 0">
+            <table class="table table-striped mt-1 autocomplete-dropdown">
+              <tbody>
+                <template x-for="pkg in results" :key="pkg.id">
+                  <tr class="autocomplete-row" style="cursor: pointer;" @click="selectPackage(pkg)">
+                    <td x-text="pkg.name"></td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
+          </template>
+
+          <!-- No Results Message -->
+          <template x-if="query && results.length === 0">
+              <div class="alert alert-warning mt-0 text-center autocomplete-dropdown">
+                  Not finding it? <a href="{% url 'package_add' %}" class="alert-link">Propose it here</a>.
+              </div>
+          </template>
         </div>
+      </div>
 
-        <!-- Right Side: Links -->
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
-        </ul>
+      <!-- Right Side Links -->
+{#      <ul class="navbar-nav ms-auto">#}
+{#        <li class="nav-item">#}
+{#          <a class="nav-link" href="#">Link</a>#}
+{#        </li>#}
+{#      </ul>#}
+    </div>
   </div>
 </nav>
+
 
 <script>
         function searchComponent() {

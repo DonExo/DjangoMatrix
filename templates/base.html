@@ -9,9 +9,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
     <script src="//unpkg.com/alpinejs" defer></script>
     <style>
-        {#body { padding: 20px; }#}
+        /* Navbar Height */
         nav.navbar {
-            height: 70px;
+            height: auto; /* Allow dynamic height */
+        }
+
+        /* Ensure the navbar stays consistent */
+        .navbar-collapse {
+            padding: 1rem; /* Add some padding for mobile view */
+        }
+
+        /* Center content properly */
+        .container-fluid {
+            align-items: center;
+        }
+
+        /* Ensure the search bar is aligned */
+        .navbar input[type="search"] {
+            width: 100%; /* Full width for better responsiveness */
+            max-width: 400px; /* Limit width for larger screens */
+            margin: 0 auto; /* Center-align */
         }
         .compatibility-table { margin-top: 20px; }
 
@@ -21,9 +38,8 @@
         .autocomplete-dropdown {
           position: absolute;
           z-index: 1000;
-          width: 38%;
+          width: 32%;
         }
-
         .info-message {
             position: fixed;
             bottom: 0;
@@ -32,6 +48,16 @@
             z-index: 1000;
             width: 40%;
             margin-top: 0em;
+        }
+
+        /* Adjust width for smaller screens */
+        @media (max-width: 768px) {
+            .autocomplete-dropdown {
+                width: 82%;
+            }
+            .info-message {
+                width: 60%;
+            }
         }
 
         .github-fork-ribbon:before { background-color: #049063; }
