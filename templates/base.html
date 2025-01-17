@@ -10,26 +10,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
     <script src="//unpkg.com/alpinejs" defer></script>
     <style>
-        /* Navbar Height */
         nav.navbar {
-            height: auto; /* Allow dynamic height */
+            height: auto;
         }
 
-        /* Ensure the navbar stays consistent */
         .navbar-collapse {
-            padding: 1rem; /* Add some padding for mobile view */
+            padding: 1rem;
         }
 
-        /* Center content properly */
         .container-fluid {
             align-items: center;
         }
 
-        /* Ensure the search bar is aligned */
         .navbar input[type="search"] {
-            width: 100%; /* Full width for better responsiveness */
-            max-width: 400px; /* Limit width for larger screens */
-            margin: 0 auto; /* Center-align */
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
         }
         .compatibility-table { margin-top: 20px; }
 
@@ -51,6 +47,12 @@
             margin-top: 0em;
         }
 
+        .btn-propose:hover{
+            background-color: #76c776;
+            transform: scale(1.1);
+            transition: 0.2s ease-in-out;
+        }
+
         /* Adjust width for smaller screens */
         @media (max-width: 768px) {
             .autocomplete-dropdown {
@@ -69,12 +71,12 @@
     {% include "navbar.html" %}
 
     <!-- Github Fork me ribbon -->
-    <a class="github-fork-ribbon right-bottom fixed"
-       href="https://github.com/DonExo/DjangoMatrix"
-       data-ribbon="Contribute on GitHub"
-       title="Contribute on GitHub">
-        Contribute on GitHub
-    </a>
+{#    <a class="github-fork-ribbon right-bottom fixed"#}
+{#       href="https://github.com/DonExo/DjangoMatrix"#}
+{#       data-ribbon="Contribute on GitHub"#}
+{#       title="Contribute on GitHub">#}
+{#        Contribute on GitHub#}
+{#    </a>#}
 
     <!-- Toast container -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1055;">
@@ -98,6 +100,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Initialize Bootstrap Tooltips
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+            // Initialize Bootstrap Toast messages
             var toastElements = document.querySelectorAll('.toast');
             toastElements.forEach(function (toastElement) {
                 var toast = new bootstrap.Toast(toastElement);

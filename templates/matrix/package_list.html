@@ -1,18 +1,19 @@
 {% extends 'base.html' %}
-{% load number_format %}
+{% load humanize %}
 
 {% block content %}
 <div class="container mt-5">
-    <h2 class="mb-4">All Django Packages/Libraries</h2>
+    <h2 class="mb-4">List Django Packages / Libraries</h2>
     <table class="table table-striped table-hover">
         <thead class="table-success">
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
-                <th scope="col">Details</th>
+                <th scope="col">Latest version</th>
                 <th scope="col" class="text-center"><i class="bi bi-star-fill text-warning"></i> Stars</th>
                 <th scope="col" class="text-center"><i class="bi bi-git text-primary"></i> Forks</th>
                 <th scope="col" class="text-center"><i class="bi bi-exclamation-circle text-danger"></i> Open Issues</th>
+                <th scope="col">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -20,10 +21,18 @@
             <tr>
                 <th scope="row">{{ forloop.counter }}</th>
                 <td>{{ package.name }}</td>
-                <td><a href="{% url 'package_details' package.slug %}" class="text-primary">View Details</a></td>
-                <td class="text-center">{{ package.metric_stars }}</td>
-                <td class="text-center">{{ package.metric_forks }}</td>
-                <td class="text-center">{{ package.metric_open_issues }}</td>
+                <td>{{ package.get_latest_version }}</td>
+                <td class="text-center">{{ package.metric_stars|intcomma }}</td>
+                <td class="text-center">{{ package.metric_forks|intcomma }}</td>
+                <td class="text-center">{{ package.metric_open_issues|intcomma }}</td>
+                <td>
+                    <a href="{% url 'package_details' package.slug %}" class="btn btn-sm btn-outline-primary me-2">
+                        <i class="bi bi-eye"></i> View
+                    </a>
+                    <a href="{{ package.repository_url }}/fork" class="btn btn-sm btn-outline-secondary" target="_blank">
+                        <i class="bi bi-git"></i> Fork
+                    </a>
+                </td>
             </tr>
             {% empty %}
             <tr>
@@ -32,6 +41,10 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <br/>
+    <h5>Not seeing a Django package? <a href="{% url 'package_add' %}">Propose it here</a> !</h5>
+
     <!-- Pagination -->
     {% if page_obj.paginator.num_pages > 1 %}
         <nav aria-label="Page navigation">

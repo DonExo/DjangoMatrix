@@ -12,22 +12,19 @@
     </button>
 
     <!-- Navbar Content -->
-    <div class="collapse navbar-collapse  p-1 rounded" id="navbarContent">
+    <div class="collapse navbar-collapse text-center p-1 rounded" id="navbarContent">
       <!-- Left Side Links -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'packages' %}">Packages</a>
         </li>
-{#        <li class="nav-item">#}
-{#          <a class="nav-link" href="#">Link</a>#}
-{#        </li>#}
       </ul>
 
       <!-- Search Field (Center) -->
       <div class="d-flex w-100 justify-content-center my-2 my-lg-0">
         <div class="container" style="max-width: 500px;" x-data="searchComponent()" @click.away="clearAll()">
           <input x-model="query" @input="fetchPackages" type="search"
-                 class="form-control border border-success rounded" placeholder="Search for a package/library name...">
+                 class="form-control border border-success rounded" placeholder="Search for a package name...">
 
           <!-- Results Table -->
           <template x-if="results.length > 0">
@@ -52,12 +49,17 @@
       </div>
 
       <!-- Right Side Links -->
-{#      <ul class="navbar-nav ms-auto">#}
-{#        <li class="nav-item">#}
-{#          <a class="nav-link" href="#">Link</a>#}
-{#        </li>#}
-{#      </ul>#}
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item">
+            <a class="btn btn-lg btn-propose" href="{% url 'package_add' %}" data-bs-toggle="tooltip" title="Propose a Package"
+               style="background-color: #90ee90; border: 1px solid black; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+              <i class="bi bi-plus-lg"></i>
+            </a>
+          </li>
+        </ul>
+
     </div>
+
   </div>
 </nav>
 

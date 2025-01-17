@@ -1,4 +1,4 @@
-from urllib.parse import urlparse
+from packaging.version import Version
 
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -57,6 +57,13 @@ class Package(models.Model):
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
+    def get_latest_version(self):
+        versions = self.versions.all()
+        if versions:
+            # Sort versions using `packaging.version.Version`
+            return max(versions, key=lambda v: Version(v.version))
+        return "-"
+
     @property
     def format_metric_stars(self):
         if self.metric_stars and self.metric_stars >= 1000:
@@ -82,23 +89,27 @@ class PackageRepoStats(models.Model):
 
     class Meta:
         verbose_name_plural = "Package repo stats"
+        ordering = ('-created_at', )
 
 
 class PackageVersion(models.Model):
-    package = models.ForeignKey(Package, on_delete=models.CASCADE)
-    version = models.CharField(max_length=10, unique=True)
+    package = models.ForeignKey(Package, on_delete=models.CASCADE, related_name='versions')
+    version = models.CharField(max_length=10)
     release_date = models.DateField(auto_now=False, auto_now_add=False, null=True, blank=True)
     django_compatibility = models.ManyToManyField(DjangoVersion, blank=True)
     python_compatibility = models.ManyToManyField(PythonVersion, blank=True)
 
     class Meta:
         ordering = ('-release_date', )
+        constraints = [
+            models.UniqueConstraint(fields=['package', 'version'], name='unique_package_version')
+        ]
 
     def __str__(self):
         return self.version
 
     def verbose_name(self):
-        return f"Package v{self.version}"
+        return f"{self.package.name} v{self.version}"
 
 
 class PackageRequest(models.Model):

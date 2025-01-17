@@ -33,8 +33,13 @@ class CompatibilityAdmin(admin.ModelAdmin):
 @admin.register(Package)
 class PackageAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
-    list_display = ('id', 'name', 'slug', 'metric_stars', 'metric_forks')
+    list_display = ('name', 'slug', 'metric_stars', 'metric_forks')
     inlines = [PackageVersionInline]
+
+
+@admin.register(PackageVersion)
+class PackageVersionAdmin(admin.ModelAdmin):
+    list_display = ('package', 'version', 'release_date')
 
 
 @admin.register(PackageRepoStats)

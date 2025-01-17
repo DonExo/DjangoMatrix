@@ -1,7 +1,9 @@
+from packaging.version import Version
+
 from django.conf import settings
 from django.contrib import messages
 from django.core.paginator import Paginator
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Max
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -34,7 +36,7 @@ def index(request):
     return render(request, "matrix/index.html", context)
 
 
-def packages(request):
+def packages_list(request):
     queryset = Package.objects.all()
     paginator = Paginator(queryset, settings.DEFAULT_NUMBER_OF_PACKAGES_ON_PAGE)
     page_number = request.GET.get('page')
@@ -46,8 +48,10 @@ def packages(request):
 
 
 def package_details(request, slug):
-    package = get_object_or_404(Package, slug=slug)
-    return render(request, 'matrix/package_details.html', {'package': package})
+    package = Package.objects.prefetch_related('versions').get(slug=slug)
+    last_updated = package.repo_stats.latest('created_at').created_at
+    versions_sorted = sorted(package.versions.all(), key=lambda v: Version(v.version), reverse=True)
+    return render(request, 'matrix/package_details.html', {'package': package, 'versions_sorted': versions_sorted, 'last_updated': last_updated})
 
 
 def package_search(request):

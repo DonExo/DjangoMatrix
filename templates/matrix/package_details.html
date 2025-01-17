@@ -4,12 +4,20 @@
 {% block content %}
 <div class="container mt-5">
     <div class="card shadow">
-        <div class="card-header bg-success text-white">
-            <h2 class="mb-0">{{ package.name }}</h2>
+        <div class="card-header bg-success text-white d-flex align-items-center">
+            <h2 class="mb-1">{{ package.name }}</h2>
+            <h5 class="mb-0 ms-auto">latest version: {{ package.get_latest_version }}</h5>
         </div>
         <div class="card-body">
             <h5 class="card-title">Description:</h5>
             <p class="card-text">{{ package.description }}</p>
+
+            <h5 class="card-title">Other versions:</h5>
+            <p class="card-text">
+                {% for version in versions_sorted %}
+                    {{ version }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </p>
 
             <h5 class="card-title">Links:</h5>
             <ul class="list-unstyled">
@@ -38,7 +46,7 @@
 
             <h5 class="card-title mt-4">Additional Information:</h5>
             <ul>
-                <li><strong>Last Updated:</strong> {{ package.last_updated|date:"M d, Y" }}</li>
+                <li><strong>Last Updated:</strong> {{ last_updated|date:"M d, Y" }}</li>
                 <li><strong>Installation:</strong> <code>pip install {{ package.name|slugify }}</code></li>
             </ul>
         </div>
@@ -51,6 +59,8 @@
             </a>
         </div>
     </div>
+
+{#    <img src="{% url 'plot_github_metrics' %}" alt="GitHub Metrics Plot">#}
 
     <!-- Related Packages -->
     <div class="mt-5">
