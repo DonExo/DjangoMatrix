@@ -7,3 +7,4 @@ pytest-django==4.9.0
 django-crispy-forms==2.3
 crispy-bootstrap5==2024.10
 matplotlib==3.10.0
+sentry-sdk==2.20.0
