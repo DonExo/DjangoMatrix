@@ -1,10 +1,11 @@
+{% load static %}
 <nav class="navbar navbar-expand-lg bg-success">
   <div class="container-fluid">
     <!-- Navbar Brand -->
-    <a class="navbar-brand text-white" href="{% url 'index' %}">
-      <img src="https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-      Django Matrix
-    </a>
+      <a class="navbar-brand d-flex align-items-center text-white" href="{% url 'index' %}">
+        <img src="{% static 'images/favicon.ico' %}" alt="Logo" width="40" height="40" class="d-inline-block">
+        <span class="ms-2">Django Matrix</span>
+      </a>
 
     <!-- Navbar Toggler -->
     <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
