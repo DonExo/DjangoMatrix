@@ -1,7 +1,9 @@
 from pathlib import Path
 import os
-
 import environ
+
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 env = environ.Env(DEBUG=(bool, False))
 
@@ -10,6 +12,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Take environment variables from .env file
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
+
+SENTRY_DSN = env("SENTRY_DSN")
+SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="dev")
+
+sentry_sdk.init(
+    dsn=SENTRY_DSN,
+    integrations=[DjangoIntegration()],
+    environment=SENTRY_ENVIRONMENT,
+    traces_sample_rate=1.0,
+    send_default_pii=True  # sends user info if available
+)
 
 GITHUB_TOKEN = env("GITHUB_TOKEN", default=None)
 SECRET_KEY = env("SECRET_KEY", default="django-insecure-xnv5ffvt@8)6%8*3j4f6&5qt#cj(z^=)dri)lgrbg_&ha2t-p5")
