@@ -23,7 +23,7 @@
       <!-- Search Field (Center) -->
       <div class="d-flex w-100 justify-content-center my-2 my-lg-0">
         <div class="container" style="max-width: 500px;" x-data="searchComponent()" @click.away="clearAll()">
-          <input x-model="query" @input="debounceFetchPackages" type="search"
+          <input x-model.debounce.300ms="query" type="search"
                  class="form-control border border-success rounded" placeholder="Search for a package name...">
 
           <!-- Results Table -->
@@ -41,9 +41,9 @@
 
           <!-- No Results Message -->
           <template x-if="!loading && query && results.length === 0">
-              <div class="alert alert-warning mt-0 text-center autocomplete-dropdown">
-                  Not finding it? <a href="{% url 'package_add' %}" class="alert-link">Propose it here</a>.
-              </div>
+            <div class="alert alert-warning mt-0 text-center autocomplete-dropdown">
+              Not finding it? <a href="{% url 'package_add' %}" class="alert-link">Propose it here</a>.
+            </div>
           </template>
         </div>
       </div>
@@ -57,9 +57,7 @@
             </a>
           </li>
         </ul>
-
     </div>
-
   </div>
 </nav>
 
@@ -69,15 +67,21 @@
       return {
         query: '',
         results: [],
-        debounceTimeout: null,
         loading: false,
 
+        init() {
+          // Watch for changes in the query and fetch results
+          this.$watch('query', (newQuery) => {
+            if (newQuery.length < 1) {
+              this.results = [];
+              this.loading = false;
+              return;
+            }
+            this.fetchPackages();
+          });
+        },
+
         fetchPackages() {
-          if (this.query.length < 1) {
-            this.results = [];
-            this.loading = false;
-            return;
-          }
           this.loading = true;
           fetch(`/packages/search/?q=${encodeURIComponent(this.query)}`)
             .then(response => response.json())
@@ -95,16 +99,10 @@
         selectPackage(pkg) {
           window.location.href = `/packages/${pkg.slug}/`;
         },
-        debounceFetchPackages() {
-          clearTimeout(this.debounceTimeout);
-          this.debounceTimeout = setTimeout(() => {
-            this.fetchPackages();
-          }, 3000);
-        },
         clearAll() {
-            this.query = '';
-            this.results = [];
-            this.loading = false;
+          this.query = '';
+          this.results = [];
+          this.loading = false;
         }
       }
     }
