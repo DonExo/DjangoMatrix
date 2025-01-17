@@ -84,3 +84,11 @@ def package_add(request):
         form = PackageRequestForm()
 
     return render(request, 'matrix/package_add.html', {'form': form})
+
+
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)
+
+
+def custom_500(request, exception):
+    return render(request, '404.html', {"foo": "bar"}, status=500)

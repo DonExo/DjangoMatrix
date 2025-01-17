@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from django.urls import path
 
 from . import views, plots
@@ -11,3 +12,7 @@ urlpatterns = [
 
     path('metrics/plot/', plots.metrics_plot, name='plot_github_metrics'),
 ]
+
+
+handler404 = 'matrix.views.custom_404'
+handler500 = 'matrix.views.custom_500'
