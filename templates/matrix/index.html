@@ -111,7 +111,7 @@
             <!-- Right Column -->
             <div class="col-md-6">
                 <div class="container">
-                    <h3>Most Popular Django packages <span class="badge rounded-pill text-bg-success">by Github stars</span></h3>
+                    <h3 style="margin-top: 2.2rem;">Most Popular Django packages <span class="badge rounded-pill text-bg-secondary">by Github stars</span></h3>
                     <ol>
                         {% for package in most_popular_packages %}
                             <li><a href="{% url 'package_details' package.slug %}">{{ package }}</a>  - {{ package.metric_stars|round_to_hundreds }}</li>
