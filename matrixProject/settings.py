@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Take environment variables from .env file
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
-SENTRY_DSN = env("SENTRY_DSN")
+SENTRY_DSN = env("SENTRY_DSN", default="your_sentry_key")
 SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="dev")
 
 sentry_sdk.init(
