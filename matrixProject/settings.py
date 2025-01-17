@@ -15,9 +15,7 @@ GITHUB_TOKEN = env("GITHUB_TOKEN", default=None)
 SECRET_KEY = env("SECRET_KEY", default="django-insecure-xnv5ffvt@8)6%8*3j4f6&5qt#cj(z^=)dri)lgrbg_&ha2t-p5")
 
 DEBUG = env("DEBUG", default=False)
-
-ALLOWED_HOSTS = ["*"]
-
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
 
 INSTALLED_APPS = [
     'django.contrib.admin',

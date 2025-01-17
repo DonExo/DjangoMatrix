@@ -49,7 +49,9 @@ def packages_list(request):
 
 def package_details(request, slug):
     package = Package.objects.prefetch_related('versions').get(slug=slug)
-    last_updated = package.repo_stats.latest('created_at').created_at
+    last_updated = None
+    if package.repo_stats.exists():
+        last_updated = package.repo_stats.latest('created_at').created_at
     versions_sorted = sorted(package.versions.all(), key=lambda v: Version(v.version), reverse=True)
     return render(request, 'matrix/package_details.html', {'package': package, 'versions_sorted': versions_sorted, 'last_updated': last_updated})
 
