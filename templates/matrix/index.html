@@ -3,7 +3,7 @@
 
 {% block content %}
 
-    <div class="container" x-data="{ base: 'python' }">
+    <div class="container" x-data="{ base: 'django' }">
         <p class="mt-5">
             Welcome to <b>Django Matrix</b>,
             your go-to resource for exploring Django versions, package compatibility, and version comparisons.
@@ -15,111 +15,132 @@
         <div class="row mt-5">
             <!-- Left Column -->
             <div class="col-md-6">
-
-                <!-- Toggle Form -->
-                <form class="toggle-form" style="margin-bottom: -10px;">
-                    <div class="form-check form-check-inline">
-                        <input
-                            class="form-check-input"
-                            type="radio"
-                            id="basePython"
-                            value="python"
-                            x-model="base"
-                            checked
-                        >
-                        <label class="form-check-label" for="basePython">Python as Base</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input
-                            class="form-check-input"
-                            type="radio"
-                            id="baseDjango"
-                            value="django"
-                            x-model="base"
-                        >
-                        <label class="form-check-label" for="baseDjango">Django as Base</label>
-                    </div>
-                </form>
-
-                <!-- Python-based Compatibility Table -->
-                <div x-show="base === 'python'" >
-                    <table class="table table-striped compatibility-table">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Python Version</th>
-                                <th>Compatible Django Versions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for python in python_versions %}
-                                <tr>
-                                    <td>{{ python.verbose_name }}</td>
-                                    <td>
-                                        {% if python.compatibilities.exists %}
-                                            Django
-                                            {% for compat in python.compatibilities.all %}
-                                                {{ compat.django_version.version }}{% if not forloop.last %}, {% endif %}
-                                            {% endfor %}
-                                        {% else %}
-                                            <em>No compatible Django versions found.</em>
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                            {% empty %}
-                                <tr>
-                                    <td colspan="2">No compatibility data available.</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Django-based Compatibility Table -->
-                <div x-show="base === 'django'" x-cloak>
-                    <table class="table table-striped compatibility-table">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Django Version</th>
-                                <th>Compatible Python Versions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for django in django_versions %}
-                                <tr>
-                                    <td>{{ django.verbose_name }}</td>
-                                    <td>
-                                        {% if django.compatibilities.exists %}
-                                            Python
-                                            {% for compat in django.compatibilities.all %}
-                                                {{ compat.python_version.version }}{% if not forloop.last %}, {% endif %}
-                                            {% endfor %}
-                                        {% else %}
-                                            <em>No compatible Python versions found.</em>
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                            {% empty %}
-                                <tr>
-                                    <td colspan="2">No compatibility data available.</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                            <div class="container">
+                                <h3 class="mt-4">Most Popular Django Packages <span class="badge rounded-pill text-bg-secondary">by GitHub stars</span></h3>
+                                <ol class="list-group mt-3">
+                                    {% for package in most_popular_packages %}
+                                        <li class="list-group-item d-flex justify-content-between align-items-center
+                                            {% if forloop.counter == 1 %} bg-warning bg-opacity-25 {% elif forloop.counter == 2 %} bg-secondary bg-opacity-10 {% elif forloop.counter == 3 %} bg-warning bg-opacity-10 {% endif %}">
+                                            <span>
+                                                <span class="fw-bold">{{ forloop.counter }}.</span>
+                                                <a href="{% url 'package_details' package.slug %}" class="text-decoration-none">
+                                                    {{ package.name }}
+                                                </a>
+                                                <span class="medal-icon" data-bs-toggle="tooltip" title="{% if forloop.counter == 1 %}Gold Medal{% elif forloop.counter == 2 %}Silver Medal{% elif forloop.counter == 3 %}Bronze Medal{% endif %}">
+                                                    {% if forloop.counter == 1 %}
+                                                        🥇
+                                                    {% elif forloop.counter == 2 %}
+                                                        🥈
+                                                    {% elif forloop.counter == 3 %}
+                                                        🥉
+                                                    {% endif %}
+                                                </span>
+                                            </span>
+                                            <span class="badge bg-success rounded-pill">{{ package.metric_stars|round_to_hundreds }}</span>
+                                        </li>
+                                    {% endfor %}
+                                </ol>
+                                <div align="center">
+                                    <a href="{% url 'packages' %}" class="d-block mt-3 text-decoration-none"><u>See all packages</u></a>
+                                </div>
+                            </div>
+                        </div>
 
             <!-- Right Column -->
             <div class="col-md-6">
-                <div class="container">
-                    <h3 style="margin-top: 2.2rem;">Most Popular Django packages <span class="badge rounded-pill text-bg-secondary">by Github stars</span></h3>
-                    <ol>
-                        {% for package in most_popular_packages %}
-                            <li><a href="{% url 'package_details' package.slug %}">{{ package }}</a>  - {{ package.metric_stars|round_to_hundreds }}</li>
-                        {% endfor %}
-                    </ol>
-                    <a href="{% url 'packages' %}">List all packages</a>
-                </div>
-            </div>
+
+                            <!-- Toggle Form -->
+                            <form class="toggle-form d-flex justify-content-center align-items-center mb-0 pb-0">
+                                <div class="btn-group" role="group" aria-label="Base Selector">
+                                    <input
+                                        type="radio"
+                                        class="btn-check"
+                                        name="baseToggle"
+                                        id="baseDjango"
+                                        value="django"
+                                        x-model="base"
+                                        checked>
+                                    <label class="btn btn-outline-success px-4 py-2" for="baseDjango">Django as Base</label>
+
+                                    <input
+                                        type="radio"
+                                        class="btn-check"
+                                        name="baseToggle"
+                                        id="basePython"
+                                        value="python"
+                                        x-model="base">
+                                    <label class="btn btn-outline-success px-4 py-2" for="basePython">Python as Base</label>
+                                </div>
+                            </form>
+
+                            <!-- Django-based Compatibility Table -->
+                            <div x-show="base === 'django'">
+                                <table class="table table-striped compatibility-table">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Django Version</th>
+                                            <th>Compatible Python Versions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for django in django_versions %}
+                                            <tr>
+                                                <td>{{ django.verbose_name }}</td>
+                                                <td>
+                                                    {% if django.compatibilities.exists %}
+                                                        Python
+                                                        {% for compat in django.compatibilities.all %}
+                                                            {{ compat.python_version.version }}{% if not forloop.last %}, {% endif %}
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        <em>No compatible Python versions found.</em>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% empty %}
+                                            <tr>
+                                                <td colspan="2">No compatibility data available.</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Python-based Compatibility Table -->
+                            <div x-show="base === 'python'" x-cloak >
+                                <table class="table table-striped compatibility-table">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Python Version</th>
+                                            <th>Compatible Django Versions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for python in python_versions %}
+                                            <tr>
+                                                <td>{{ python.verbose_name }}</td>
+                                                <td>
+                                                    {% if python.compatibilities.exists %}
+                                                        Django
+                                                        {% for compat in python.compatibilities.all %}
+                                                            {{ compat.django_version.version }}{% if not forloop.last %}, {% endif %}
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        <em>No compatible Django versions found.</em>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% empty %}
+                                            <tr>
+                                                <td colspan="2">No compatibility data available.</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
         </div>
     </div>
 

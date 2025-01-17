@@ -34,13 +34,13 @@
             <h5 class="card-title">Metrics:</h5>
             <ul class="list-group">
                 <li class="list-group-item">
-                    <i class="bi bi-star-fill text-warning"></i> <strong>Stars:</strong> {{ package.metric_stars }}
+                    <i class="bi bi-star-fill text-warning"></i> <strong>Stars:</strong> {{ package.metric_stars|intcomma }}
                 </li>
                 <li class="list-group-item">
-                    <i class="bi bi-git text-primary"></i> <strong>Forks:</strong> {{ package.metric_forks }}
+                    <i class="bi bi-git text-primary"></i> <strong>Forks:</strong> {{ package.metric_forks|intcomma }}
                 </li>
                 <li class="list-group-item">
-                    <i class="bi bi-exclamation-circle text-danger"></i> <strong>Open Issues:</strong> {{ package.metric_open_issues }}
+                    <i class="bi bi-exclamation-circle text-danger"></i> <strong>Open Issues:</strong> {{ package.metric_open_issues|intcomma }}
                 </li>
             </ul>
 
