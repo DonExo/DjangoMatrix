@@ -11,9 +11,9 @@ class PackageRequestForm(forms.ModelForm):
         fields = ['name', 'description', 'repository_url', 'documentation_url']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter package name'}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Brief description'}),
             'repository_url': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'Only GitHub URLs are accepted'}),
-            'documentation_url': forms.URLInput(attrs={'class': 'form-control'}),
+            'documentation_url': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'Optional, but highly desired'}),
         }
 
     def clean_repository_url(self):
