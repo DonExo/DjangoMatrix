@@ -35,7 +35,7 @@
 
             <div class="d-flex align-items-center mb-2">
               <h5 class="card-title mb-0">Metrics:</h5>
-              <small class="ms-2">(Last update: {{ last_updated|date:"M d, Y" }})</small>
+              <small class="ms-2">(Last update: {{ package.get_last_updated|date:"M d, Y" }})</small>
             </div>
 
             <ul class="list-group">

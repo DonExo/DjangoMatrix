@@ -2,8 +2,7 @@ from packaging.version import Version
 
 from django.conf import settings
 from django.contrib import messages
-from django.core.paginator import Paginator
-from django.db.models import Prefetch, Max
+from django.db.models import Prefetch
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
@@ -48,11 +47,8 @@ class PackageListView(SingleTableView):
 
 def package_details(request, slug):
     package = Package.objects.prefetch_related('versions').get(slug=slug)
-    last_updated = None
-    if package.repo_stats.exists():
-        last_updated = package.repo_stats.latest('created_at').created_at
     versions_sorted = sorted(package.versions.all(), key=lambda v: Version(v.version), reverse=True)
-    return render(request, 'matrix/package_details.html', {'package': package, 'versions_sorted': versions_sorted, 'last_updated': last_updated})
+    return render(request, 'matrix/package_details.html', {'package': package, 'versions_sorted': versions_sorted})
 
 
 def package_search(request):

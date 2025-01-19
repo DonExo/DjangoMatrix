@@ -66,6 +66,13 @@ class Package(models.Model):
         return "-"
 
     @property
+    def get_last_updated(self):
+        last_updated = None
+        if self.repo_stats.exists():
+            last_updated = self.repo_stats.latest('created_at').created_at
+        return last_updated
+
+    @property
     def format_metric_stars(self):
         if self.metric_stars and self.metric_stars >= 1000:
             return f"{round(self.metric_stars / 1000, 1)}k"

@@ -6,6 +6,12 @@ nav.navbar {
     padding: 1rem;
 }
 
+.nav-link {
+    color: white;
+}
+
+
+
 .container-fluid {
     align-items: center;
 }
