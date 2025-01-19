@@ -37,7 +37,52 @@ nav.navbar {
     transform: translateX(-50%);
     z-index: 1000;
     width: 40%;
-    margin-top: 0em;
+    margin-top: 0;
+}
+
+.table-packages thead th a {
+    text-decoration: none;
+    color: inherit;
+}
+.table-packages thead th a:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+a {
+    color: #198754;
+}
+
+a:hover {
+    color: #10693f;
+}
+
+.pagination .page-link {
+    color: #198754 ;
+    border: 1px solid #198754 ;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #198754 ;
+    border-color: #198754 ;
+    color: white;
+}
+
+.pagination .page-link {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.table-packages th {
+    line-height: 1.7;
+    vertical-align: middle;
+}
+
+.table-packages th a {
+    line-height: 1.5;
+    vertical-align: middle;
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
 }
 
 .btn-propose:hover{

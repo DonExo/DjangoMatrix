@@ -1,87 +1,15 @@
 {% extends 'base.html' %}
-{% load humanize %}
+{% load django_tables2 %}
 
 {% block title %}Packages{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
     <h2 class="mb-4">List Django Packages / Libraries</h2>
-    <table class="table table-striped table-hover">
-        <thead class="table-success">
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Latest version</th>
-                <th scope="col" class="text-center"><i class="bi bi-star-fill text-warning"></i> Stars</th>
-                <th scope="col" class="text-center"><i class="bi bi-git text-primary"></i> Forks</th>
-                <th scope="col" class="text-center"><i class="bi bi-exclamation-circle text-danger"></i> Open Issues</th>
-                <th scope="col">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for package in page_obj %}
-            <tr>
-                <th scope="row">{{ forloop.counter }}</th>
-                <td>{{ package.name }}</td>
-                <td>{{ package.get_latest_version }}</td>
-                <td class="text-center">{{ package.metric_stars|intcomma }}</td>
-                <td class="text-center">{{ package.metric_forks|intcomma }}</td>
-                <td class="text-center">{{ package.metric_open_issues|intcomma }}</td>
-                <td>
-                    <a href="{% url 'package_details' package.slug %}" class="btn btn-sm btn-outline-primary me-2">
-                        <i class="bi bi-eye"></i> View
-                    </a>
-                    <a href="{{ package.repository_url }}/fork" class="btn btn-sm btn-outline-secondary" target="_blank">
-                        <i class="bi bi-git"></i> Fork
-                    </a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="6" class="text-center">No packages available.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <br/>
-    <h5 align="center">Can't find what you're looking for? <a href="{% url 'package_add' %}">Propose it here</a></h5>
-
-    <!-- Pagination -->
-    {% if page_obj.paginator.num_pages > 1 %}
-        <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-            {% if page_obj.has_previous %}
-            <li class="page-item">
-                <a class="page-link" href="?page=1" aria-label="First">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
-                    <span aria-hidden="true">&lsaquo;</span>
-                </a>
-            </li>
-            {% endif %}
-            {% for page_num in page_obj.paginator.page_range %}
-            <li class="page-item {% if page_num == page_obj.number %}active{% endif %}">
-                <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
-            </li>
-            {% endfor %}
-            {% if page_obj.has_next %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
-                    <span aria-hidden="true">&rsaquo;</span>
-                </a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-            {% endif %}
-        </ul>
-    </nav>
-    {% endif %}
+    {% render_table table "django_tables2/bootstrap5.html" %}
 </div>
+
+<br/>
+<h5 align="center">Can't find what you're looking for? <a href="{% url 'package_add' %}">Propose it here</a></h5>
+
 {% endblock %}

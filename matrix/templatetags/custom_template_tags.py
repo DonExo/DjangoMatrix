@@ -13,3 +13,13 @@ def round_to_hundreds(value):
         return str(value)
     except (ValueError, TypeError):
         return value  # Return the value as-is if it's not a number
+
+
+@register.filter
+def contains_character(value, arg):
+    """
+    Checks if 'arg' is a substring of 'value'.
+    Value is passed as a list, hence take the first item.
+    Usage: {{ value|contains:"substring" }}
+    """
+    return arg in value[0] if value else False

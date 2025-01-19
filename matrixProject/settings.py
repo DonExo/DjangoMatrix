@@ -7,10 +7,8 @@ from sentry_sdk.integrations.django import DjangoIntegration
 
 env = environ.Env(DEBUG=(bool, False))
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Take environment variables from .env file
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
 SENTRY_DSN = env("SENTRY_DSN", default="https://123dc7694cb7f44d53e88e52eac78ea6@o1236278.ingest.us.sentry.io/1238661256617984")
@@ -30,6 +28,10 @@ SECRET_KEY = env("SECRET_KEY", default="django-insecure-xnv5ffvt@8)6%8*3j4f6&5qt
 DEBUG = env("DEBUG", default=False)
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
 
+PACKAGES_PER_PAGE = env.int('PACKAGES_PER_PAGE', default=100)
+
+USE_THOUSAND_SEPARATOR = True
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -42,6 +44,7 @@ INSTALLED_APPS = [
     # Third party apps
     'crispy_forms',
     'crispy_bootstrap5',
+    'django_tables2',
 
     # Local apps
     'matrix',
@@ -110,7 +113,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
@@ -126,7 +128,5 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-DEFAULT_NUMBER_OF_PACKAGES_ON_PAGE = env.int('NUMBER_OF_PACKAGES_ON_PAGE', default=100)

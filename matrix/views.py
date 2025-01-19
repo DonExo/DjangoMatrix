@@ -5,10 +5,13 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Prefetch, Max
 from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, redirect
+
+from django_tables2.views import SingleTableView
 
 from .forms import PackageRequestForm
 from .models import DjangoVersion, PythonVersion, Package, Compatibility
+from .tables import PackageTable
 
 
 def index(request):
@@ -36,15 +39,11 @@ def index(request):
     return render(request, "matrix/index.html", context)
 
 
-def packages_list(request):
-    queryset = Package.objects.all()
-    paginator = Paginator(queryset, settings.DEFAULT_NUMBER_OF_PACKAGES_ON_PAGE)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    context = {
-        'page_obj': page_obj,
-    }
-    return render(request, 'matrix/package_list.html', context)
+class PackageListView(SingleTableView):
+    model = Package
+    table_class = PackageTable
+    template_name = "matrix/package_list.html"
+    paginate_by = settings.PACKAGES_PER_PAGE
 
 
 def package_details(request, slug):
