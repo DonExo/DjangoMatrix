@@ -44,9 +44,9 @@ class PackageVersionAdmin(admin.ModelAdmin):
 
 @admin.register(PackageRepoStats)
 class PackageRepoStatsAdmin(admin.ModelAdmin):
-    list_display = ('package', 'created_at', 'metric_stars', 'metric_forks', 'metric_open_issues')
+    list_display = ('package', 'created_at', 'metric_stars', 'metric_forks', 'metric_open_issues', 'metric_last_commit')
     list_filter = ('created_at', 'package')
-    readonly_fields = ('created_at', )
+    readonly_fields = ('created_at', 'metric_last_commit')
 
 
 @admin.register(PackageRequest)

@@ -45,6 +45,7 @@ class Package(models.Model):
     metric_stars = models.PositiveIntegerField(null=True, blank=True)
     metric_forks = models.PositiveIntegerField(null=True, blank=True)
     metric_open_issues = models.PositiveIntegerField(null=True, blank=True)
+    metric_last_commit = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         ordering = ('-metric_stars', )
@@ -82,6 +83,7 @@ class PackageRepoStats(models.Model):
     metric_stars = models.PositiveIntegerField(default=0)
     metric_forks = models.PositiveIntegerField(default=0)
     metric_open_issues = models.PositiveIntegerField(default=0)
+    metric_last_commit = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

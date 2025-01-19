@@ -31,7 +31,11 @@
                 </li>
             </ul>
 
-            <h5 class="card-title">Metrics:</h5>
+            <div class="d-flex align-items-center mb-2">
+              <h5 class="card-title mb-0">Metrics:</h5>
+              <small class="ms-2">(Last update: {{ last_updated|date:"M d, Y" }})</small>
+            </div>
+
             <ul class="list-group">
                 <li class="list-group-item">
                     <i class="bi bi-star-fill text-warning"></i> <strong>Stars:</strong> {{ package.metric_stars|intcomma }}
@@ -42,11 +46,13 @@
                 <li class="list-group-item">
                     <i class="bi bi-exclamation-circle text-danger"></i> <strong>Open Issues:</strong> {{ package.metric_open_issues|intcomma }}
                 </li>
+                <li class="list-group-item">
+                    <i class="bi bi-clock-history text-primary"></i> <strong>Last Commit:</strong> <u>{{ package.metric_last_commit|date:"M d, Y" }}</u> ({{ package.metric_last_commit|timesince }} ago)
+                </li>
             </ul>
 
             <h5 class="card-title mt-4">Additional Information:</h5>
             <ul>
-                <li><strong>Last Updated:</strong> {{ last_updated|date:"M d, Y" }}</li>
                 <li><strong>Installation:</strong> <code>pip install {{ package.name|slugify }}</code></li>
             </ul>
         </div>
