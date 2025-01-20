@@ -127,6 +127,13 @@ class PackageRequest(models.Model):
     repository_url = models.URLField()
     documentation_url = models.URLField(null=True, blank=True)
     submitted_at = models.DateTimeField(auto_now_add=True)
+    latest_version = models.CharField(max_length=100, null=True)
+    django_compatible_versions = models.ManyToManyField(
+        DjangoVersion,
+        blank=True,
+        help_text='Select all the compatible versions of the package',
+    )
+
     is_approved = models.BooleanField(default=False)
 
     def __str__(self):
@@ -136,12 +143,18 @@ class PackageRequest(models.Model):
         slug = slugify(self.name)
         if Package.objects.filter(slug=slug).exists():
             raise ValidationError(f"Package {slug} already exists")
-        Package.objects.create(
+        package = Package.objects.create(
             name=self.name,
             description=self.description,
             repository_url=self.repository_url,
             documentation_url=self.documentation_url,
         )
+        if self.django_compatible_versions:
+            package_version = PackageVersion.objects.create(
+                package=package,
+                version=self.latest_version,
+            )
+            package_version.django_compatibility.set(self.django_compatible_versions.all())
 
 
 class Compatibility(models.Model):

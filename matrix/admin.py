@@ -12,7 +12,7 @@ class CompatibilityInline(admin.TabularInline):
 
 class PackageVersionInline(admin.TabularInline):
     model = PackageVersion
-    extra = 1
+    extra = 0
 
 @admin.register(DjangoVersion)
 class DjangoVersionAdmin(admin.ModelAdmin):

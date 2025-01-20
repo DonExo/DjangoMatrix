@@ -71,6 +71,7 @@ def package_add(request):
         if form.is_valid():
             package_request = form.save(commit=False)
             package_request.save()
+            form.save_m2m()
             messages.success(request, "Your package submission has been received. Thank you!")
             return redirect('packages')
         else:
