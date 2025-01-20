@@ -9,3 +9,4 @@ crispy-bootstrap5==2024.10
 matplotlib==3.10.0
 sentry-sdk==2.20.0
 django-tables2==2.7.5
+django-extensions==3.2.3
