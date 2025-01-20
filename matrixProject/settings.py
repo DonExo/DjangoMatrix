@@ -11,21 +11,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
-SENTRY_DSN = env("SENTRY_DSN", default="https://123dc7694cb7f44d53e88e52eac78ea6@o1236278.ingest.us.sentry.io/1238661256617984")
+DEBUG = env("DEBUG", default=False)
+
+SENTRY_DSN = env("SENTRY_DSN", default=None)
 SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="dev")
 
-sentry_sdk.init(
-    dsn=SENTRY_DSN,
-    integrations=[DjangoIntegration()],
-    environment=SENTRY_ENVIRONMENT,
-    traces_sample_rate=1.0,
-    send_default_pii=True  # sends user info if available
-)
+if not DEBUG:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()],
+        environment=SENTRY_ENVIRONMENT,
+        traces_sample_rate=1.0,
+        send_default_pii=True  # sends user info if available
+    )
 
 GITHUB_TOKEN = env("GITHUB_TOKEN", default=None)
 SECRET_KEY = env("SECRET_KEY", default="django-insecure-xnv5ffvt@8)6%8*3j4f6&5qt#cj(z^=)dri)lgrbg_&ha2t-p5")
 
-DEBUG = env("DEBUG", default=False)
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
 
 PACKAGES_PER_PAGE = env.int('PACKAGES_PER_PAGE', default=100)
