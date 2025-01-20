@@ -110,6 +110,10 @@ footer a:hover {
   color: #ffffff;
 }
 
+.foo {
+    color: red;
+}
+
 .medal-icon {
     font-size: 2rem !important;
     line-height: 1;
