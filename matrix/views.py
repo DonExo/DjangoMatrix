@@ -47,8 +47,12 @@ class PackageListView(SingleTableView):
 
 def package_details(request, slug):
     package = Package.objects.prefetch_related('versions').get(slug=slug)
-    versions_sorted = sorted(package.versions.all(), key=lambda v: Version(v.version), reverse=True)
-    return render(request, 'matrix/package_details.html', {'package': package, 'versions_sorted': versions_sorted})
+    versions_sorted = sorted(package.versions.prefetch_related("django_compatibility").all(), key=lambda v: Version(v.version), reverse=True)
+    context = {
+        "package": package,
+        "versions_sorted": versions_sorted,
+    }
+    return render(request, 'matrix/package_details.html', context)
 
 
 def package_search(request):

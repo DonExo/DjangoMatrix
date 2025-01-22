@@ -10,7 +10,30 @@ nav.navbar {
     color: white;
 }
 
+#selectedVersionDetails {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
 
+.fade-out {
+  opacity: 0 !important;
+}
+
+.version-choice {
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Lighter blue on hover */
+.version-choice:hover {
+  background-color: #e7f1ff;
+}
+
+/* When actually selected (clicked) */
+.version-choice.selected {
+  background-color: #0d6efd;
+  color: #fff;
+}
 
 .container-fluid {
     align-items: center;

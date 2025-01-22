@@ -14,13 +14,25 @@
             <h5 class="card-title">Description:</h5>
             <p class="card-text">{{ package.description }}</p>
 
-            <h5 class="card-title">Other versions:</h5>
-            <p class="card-text">
+            <h5 class="card-title">Compatibility Matrix:</h5>
+            <div class="d-flex mb-1 " style="gap: 0.1rem;" id="versionsRow">
                 {% for version in versions_sorted %}
-                    {{ version }}{% if not forloop.last %}, {% endif %}
+                  <div
+                    class="flex-fill border p-3 text-center version-choice"
+                    data-version-label="{{ version.version }}"
+                    data-django-compat="{% for dj in version.django_compatibility.all %}<b>{{ dj.version }}</b> ✅ {% if not forloop.last %} | {% endif %}{% endfor %}"
+                  >
+                    <strong>{{ version.version }}</strong>
+                  </div>
                 {% endfor %}
-            </p>
+            
+            </div>
 
+            <!-- Compatible Django Versions -->
+            <div class="p-3 text-center" id="selectedVersionDetails">
+            </div>
+
+            <br/>
             <h5 class="card-title">Links:</h5>
             <ul class="list-unstyled">
                 <li class="d-flex">
@@ -95,4 +107,32 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const versionDivs = document.querySelectorAll('.version-choice');
+      const detailsArea = document.getElementById('selectedVersionDetails');
+    
+      // Removes "selected" class from all boxes
+      function clearActive() {
+        versionDivs.forEach(div => div.classList.remove('selected'));
+      }
+    
+      // Click handler for each version
+      versionDivs.forEach(div => {
+        div.addEventListener('click', () => {
+          clearActive();
+          div.classList.add('selected');
+          const djangoCompat = div.dataset.djangoCompat;  // e.g. "5.1 ✅|5.0 ✅|4.2 ✅"
+          detailsArea.innerHTML = `<h5>Compatible Django versions: ${djangoCompat}</h5>`;
+        });
+      });
+    
+      // Auto-select the first version
+      if (versionDivs.length > 0) {
+        versionDivs[0].click();
+      }
+    });
+</script>
 {% endblock %}
