@@ -52,6 +52,7 @@ class PackageRepoStatsAdmin(admin.ModelAdmin):
 @admin.register(PackageTopic)
 class PackageTopicAdmin(admin.ModelAdmin):
     list_display = ('package', 'name')
+    search_fields = ['name']
 
 
 @admin.register(PackageRequest)

@@ -2,7 +2,7 @@ from packaging.version import Version
 
 from django.conf import settings
 from django.contrib import messages
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Count
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
@@ -48,9 +48,25 @@ class PackageListView(SingleTableView):
 def package_details(request, slug):
     package = Package.objects.prefetch_related('versions').get(slug=slug)
     versions_sorted = sorted(package.versions.prefetch_related("django_compatibility").all(), key=lambda v: Version(v.version), reverse=True)
+
+    excluded_topics = ["python", "django"]
+    topics_to_match = package.topics.exclude(name__in=excluded_topics)
+
+    # Find other packages that share ANY of these topics
+    # and annotate how many they have in common
+    similar_packages = (
+        Package.objects
+               .filter(topics__name__in=topics_to_match.values_list('name', flat=True))
+               .exclude(pk=package.pk)
+               .annotate(shared_topic_count=Count('topics__name'))
+               .order_by('-shared_topic_count')
+               .distinct()
+    )
+
     context = {
         "package": package,
         "versions_sorted": versions_sorted,
+        "similar_packages": similar_packages
     }
     return render(request, 'matrix/package_details.html', context)
 
