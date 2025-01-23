@@ -2,7 +2,7 @@ from django.contrib import admin, messages
 from django.core.exceptions import ValidationError
 
 from .models import DjangoVersion, PythonVersion, Compatibility, Package, PackageVersion, PackageRepoStats, \
-    PackageRequest
+    PackageRequest, PackageTopic
 
 
 class CompatibilityInline(admin.TabularInline):
@@ -47,6 +47,11 @@ class PackageRepoStatsAdmin(admin.ModelAdmin):
     list_display = ('package', 'created_at', 'metric_stars', 'metric_forks', 'metric_open_issues', 'metric_last_commit')
     list_filter = ('created_at', 'package')
     readonly_fields = ('created_at', 'metric_last_commit')
+
+
+@admin.register(PackageTopic)
+class PackageTopicAdmin(admin.ModelAdmin):
+    list_display = ('package', 'name')
 
 
 @admin.register(PackageRequest)

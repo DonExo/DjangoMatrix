@@ -14,6 +14,7 @@
             <h5 class="card-title">Description:</h5>
             <p class="card-text">{{ package.description }}</p>
 
+            <br/>
             <h5 class="card-title">Compatibility Matrix:</h5>
             <div class="d-flex mb-1 " style="gap: 0.1rem;" id="versionsRow">
                 {% for version in versions_sorted %}
@@ -64,6 +65,14 @@
                     <i class="bi bi-clock-history text-primary"></i> <strong>Last Commit:</strong> <u>{{ package.metric_last_commit|date:"M d, Y" }}</u> ({{ package.metric_last_commit|timesince }} ago)
                 </li>
             </ul>
+
+            <br/>
+            <h5 class="card-title">Tags (Topics):</h5>
+            {% for topic in package.topics.all %}
+                <span class="badge text-bg-success fs-7">{{ topic }}</span>
+            {% empty %}
+                <p>No tags associated.</p>
+            {% endfor %}
 
             <h5 class="card-title mt-4">Additional Information:</h5>
             <ul>

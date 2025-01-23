@@ -140,6 +140,7 @@ class PackageRequest(models.Model):
         return f"Package Request: {self.name}"
 
     def create_package_from_request(self):
+        print("create_package_from_request")
         slug = slugify(self.name)
         if Package.objects.filter(slug=slug).exists():
             raise ValidationError(f"Package {slug} already exists")
@@ -156,11 +157,31 @@ class PackageRequest(models.Model):
             )
             package_version.django_compatibility.set(self.django_compatible_versions.all())
 
+        # Fetch and create topics/tags from the repo.
+        PackageTopic.create_topics(package)
+
+
+class PackageTopic(models.Model):
+    package = models.ForeignKey(Package, on_delete=models.CASCADE, related_name='topics')
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+    def verbose_name(self):
+        return f"{self.package} -{self.name}"
+
+    @classmethod
+    def create_topics(cls, package):
+        print("In create_topics")
+        from matrix import automation
+        automation.create_package_topics(package)
+
 
 class Compatibility(models.Model):
     django_version = models.ForeignKey(DjangoVersion, on_delete=models.CASCADE, related_name="compatibilities")
     python_version = models.ForeignKey(PythonVersion, on_delete=models.CASCADE, related_name="compatibilities", null=True, blank=True)
-    package = models.ForeignKey(Package, on_delete=models.CASCADE, null=True, blank=True)
+    package = models.ForeignKey("Package", on_delete=models.CASCADE, null=True, blank=True)
     version = models.CharField(max_length=100, help_text=_("example: 3.2.5"), null=True, blank=True)
     notes = models.TextField(null=True, blank=True)
 
@@ -170,4 +191,3 @@ class Compatibility(models.Model):
 
     def __str__(self):
         return f"{self.django_version} - {self.python_version}"
-
