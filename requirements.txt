@@ -6,7 +6,7 @@ pytest==8.3.4
 pytest-django==4.9.0
 django-crispy-forms==2.3
 crispy-bootstrap5==2024.10
-matplotlib==3.10.0
 sentry-sdk==2.20.0
 django-tables2==2.7.5
 django-extensions==3.2.3
+plotly==5.24.1

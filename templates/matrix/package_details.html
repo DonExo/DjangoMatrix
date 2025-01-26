@@ -4,155 +4,169 @@
 {% block title %}Package info{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="card shadow">
-        <div class="card-header bg-success text-white d-flex align-items-center">
-            <h2 class="mb-1">{{ package.name }}</h2>
-            <h5 class="mb-0 ms-auto">latest version: {{ package.get_latest_version }}</h5>
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">Description:</h5>
-            <p class="card-text">{{ package.description }}</p>
+    <div class="container mt-5">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white d-flex align-items-center">
+                <h2 class="mb-1">{{ package.name }}</h2>
+                <h5 class="mb-0 ms-auto">latest version: {{ package.get_latest_version }}</h5>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Description:</h5>
+                <p class="card-text">{{ package.description }}</p>
 
-            <br/>
-            <h5 class="card-title">Compatibility Matrix:</h5>
-            <div class="d-flex mb-1 " style="gap: 0.1rem;" id="versionsRow">
-                {% for version in versions_sorted %}
-                  <div
-                    class="flex-fill border p-3 text-center version-choice"
-                    data-version-label="{{ version.version }}"
-                    data-django-compat="{% for dj in version.django_compatibility.all %}<b>{{ dj.version }}</b> ✅ {% if not forloop.last %} | {% endif %}{% endfor %}"
-                  >
-                    <strong>{{ version.version }}</strong>
-                  </div>
-                {% endfor %}
+                <h5 class="card-title">Compatibility Matrix:</h5>
+                <div class="d-flex mb-1 " style="gap: 0.1rem;" id="versionsRow">
+                    {% for version in versions_sorted %}
+                        <div
+                                class="flex-fill border p-3 text-center version-choice"
+                                data-version-label="{{ version.version }}"
+                                data-django-compat="{% for dj in version.django_compatibility.all %}<b>{{ dj.version }}</b> ✅ {% if not forloop.last %} | {% endif %}{% endfor %}"
+                        >
+                            <strong>{{ version.version }}</strong>
+                        </div>
+                    {% endfor %}
+
+                </div>
+
+                <!-- Compatible Django Versions -->
+                <div class="p-3 text-center" id="selectedVersionDetails">
+                </div>
+
+                <br/>
+                <h5 class="card-title">Links:</h5>
+                <ul class="list-unstyled">
+                    <li class="d-flex">
+                        <span class="fw-bold" style="width: 200px; text-align: left;">Repository URL:</span>
+                        <a href="{{ package.repository_url }}" class="ms-2 text-primary"
+                           target="_blank">{{ package.repository_url }}</a>
+                    </li>
+                    <li class="d-flex mt-2">
+                        <span class="fw-bold" style="width: 200px; text-align: left;">Documentation URL:</span>
+                        <a href="{{ package.documentation_url }}" class="ms-2 text-primary"
+                           target="_blank">{{ package.documentation_url }}</a>
+                    </li>
+                </ul>
+
+                <div class="d-flex align-items-center mb-2">
+                    <h5 class="card-title mb-0">Metrics:</h5>
+                    <small class="ms-2">(Last update: {{ package.get_last_updated|date:"M d, Y" }})</small>
+                </div>
+
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <strong>Stars:</strong> {{ package.metric_stars|intcomma }}
+                    </li>
+                    <li class="list-group-item">
+                        <i class="bi bi-git text-primary"></i>
+                        <strong>Forks:</strong> {{ package.metric_forks|intcomma }}
+                    </li>
+                    <li class="list-group-item">
+                        <i class="bi bi-exclamation-circle text-danger"></i> <strong>Open Issues:</strong>
+                        {{ package.metric_open_issues|intcomma }}
+                        <span
+                                class="bi bi-info-circle "
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="right"
+                                title="Combines Pull Requests + Open Issues">
+                        </span>
+                    </li>
+                    <li class="list-group-item">
+                        <i class="bi bi-clock-history text-primary"></i> <strong>Last Commit:</strong>
+                        <u>{{ package.metric_last_commit|date:"M d, Y" }}</u>
+                        ({{ package.metric_last_commit|timesince }} ago)
+                    </li>
+                </ul>
             
+                <br/>
+                <h5 class="card-title">Tags (Topics):</h5>
+                {% for topic in package.topics.all %}
+                    <span class="badge text-bg-success fs-7">{{ topic }}</span>
+                {% empty %}
+                    <p>No tags associated.</p>
+                {% endfor %}
+
+                <h5 class="card-title mt-4">Additional Information:</h5>
+                <ul>
+                    <li><strong>Installation:</strong> <code>pip install {{ package.name|slugify }}</code></li>
+                </ul>
             </div>
-
-            <!-- Compatible Django Versions -->
-            <div class="p-3 text-center" id="selectedVersionDetails">
+            <div class="card-footer bg-light">
+                <a href="{{ package.repository_url }}" class="btn btn-warning" target="_blank">
+                    <i class="bi bi-star"></i> Star on GitHub
+                </a>
+                <a href="{{ package.repository_url }}/fork" class="btn btn-primary" target="_blank">
+                    <i class="bi bi-git"></i> Fork on GitHub
+                </a>
             </div>
-
-            <br/>
-            <h5 class="card-title">Links:</h5>
-            <ul class="list-unstyled">
-                <li class="d-flex">
-                    <span class="fw-bold" style="width: 200px; text-align: left;">Repository URL:</span>
-                    <a href="{{ package.repository_url }}" class="ms-2 text-primary" target="_blank">{{ package.repository_url }}</a>
-                </li>
-                <li class="d-flex mt-2">
-                    <span class="fw-bold" style="width: 200px; text-align: left;">Documentation URL:</span>
-                    <a href="{{ package.documentation_url }}" class="ms-2 text-primary" target="_blank">{{ package.documentation_url }}</a>
-                </li>
-            </ul>
-
-            <div class="d-flex align-items-center mb-2">
-              <h5 class="card-title mb-0">Metrics:</h5>
-              <small class="ms-2">(Last update: {{ package.get_last_updated|date:"M d, Y" }})</small>
-            </div>
-
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <i class="bi bi-star-fill text-warning"></i> <strong>Stars:</strong> {{ package.metric_stars|intcomma }}
-                </li>
-                <li class="list-group-item">
-                    <i class="bi bi-git text-primary"></i> <strong>Forks:</strong> {{ package.metric_forks|intcomma }}
-                </li>
-                <li class="list-group-item">
-                    <i class="bi bi-exclamation-circle text-danger"></i> <strong>Open Issues:</strong> {{ package.metric_open_issues|intcomma }}
-                </li>
-                <li class="list-group-item">
-                    <i class="bi bi-clock-history text-primary"></i> <strong>Last Commit:</strong> <u>{{ package.metric_last_commit|date:"M d, Y" }}</u> ({{ package.metric_last_commit|timesince }} ago)
-                </li>
-            </ul>
-
-            <br/>
-            <h5 class="card-title">Tags (Topics):</h5>
-            {% for topic in package.topics.all %}
-                <span class="badge text-bg-success fs-7">{{ topic }}</span>
-            {% empty %}
-                <p>No tags associated.</p>
-            {% endfor %}
-
-            <h5 class="card-title mt-4">Additional Information:</h5>
-            <ul>
-                <li><strong>Installation:</strong> <code>pip install {{ package.name|slugify }}</code></li>
-            </ul>
         </div>
-        <div class="card-footer bg-light">
-            <a href="{{ package.repository_url }}" class="btn btn-warning" target="_blank">
-                <i class="bi bi-star"></i> Star on GitHub
-            </a>
-            <a href="{{ package.repository_url }}/fork" class="btn btn-primary" target="_blank">
-                <i class="bi bi-git"></i> Fork on GitHub
-            </a>
-        </div>
-    </div>
 
-
-    <!-- Metrics Graph -->
+    
+            <!-- Metrics Graph -->
     <div class="mt-5">
         <h4>Metrics Graph</h4>
         <div class="row">
-{#                <img src="{% url 'plot_github_metrics' %}" alt="GitHub Metrics Plot" width="200px;" height="200px;">#}
+            {{ graph_html|safe }}
         </div>
     </div>
 
     <!-- Similar Packages -->
     <div class="mt-5">
-
         <div class="card-body d-flex align-items-center mb-2">
-          <h4 class="card-title mb-0 me-2">Similar Packages</h4>
-          <p class="small mb-0 ">
-              <i>Current recommendation system is based on package's Tags</i>
-          </p>
+            <h4 class="card-title mb-0 me-2">Similar Packages</h4>
+            <p class="small mb-0 ">
+                <i>Current recommendation system is based on package's Tags</i>
+            </p>
         </div>
-
         <div class="row row-cols-1 row-cols-md-3 g-4">
             {% for package in similar_packages %}
                 <div class="col">
                     <div class="card h-100">
-                      <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">{{ package.name }}</h5>
-                        <p class="card-text flex-grow-1">
-                          {{ package.description }}
-                        </p>
-                        <a href="{% url 'package_details' package.slug %}" class="btn btn-outline-success mt-auto">View Details</a>
-                      </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ package.name }}</h5>
+                            <p class="card-text flex-grow-1">
+                                {{ package.description }}
+                            </p>
+                            <a href="{% url 'package_details' package.slug %}" class="btn btn-outline-success mt-auto">View
+                                Details</a>
+                        </div>
                     </div>
-               </div>
+                </div>
             {% empty %}
                 <p>No similar packages found.</p>
             {% endfor %}
         </div>
     </div>
-</div>
+    
+    <!-- End of Container -->
+    </div>
 
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const versionDivs = document.querySelectorAll('.version-choice');
-      const detailsArea = document.getElementById('selectedVersionDetails');
-    
-      // Removes "selected" class from all boxes
-      function clearActive() {
-        versionDivs.forEach(div => div.classList.remove('selected'));
-      }
-    
-      // Click handler for each version
-      versionDivs.forEach(div => {
-        div.addEventListener('click', () => {
-          clearActive();
-          div.classList.add('selected');
-          const djangoCompat = div.dataset.djangoCompat;  // e.g. "5.1 ✅|5.0 ✅|4.2 ✅"
-          detailsArea.innerHTML = `<h5>Compatible Django versions: ${djangoCompat}</h5>`;
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const versionDivs = document.querySelectorAll('.version-choice');
+            const detailsArea = document.getElementById('selectedVersionDetails');
+
+            // Removes "selected" class from all boxes
+            function clearActive() {
+                versionDivs.forEach(div => div.classList.remove('selected'));
+            }
+
+            // Click handler for each version
+            versionDivs.forEach(div => {
+                div.addEventListener('click', () => {
+                    clearActive();
+                    div.classList.add('selected');
+                    const djangoCompat = div.dataset.djangoCompat;  // e.g. "5.1 ✅|5.0 ✅|4.2 ✅"
+                    detailsArea.innerHTML = `<h5>Compatible Django versions: ${djangoCompat}</h5>`;
+                });
+            });
+
+            // Auto-select the first version
+            if (versionDivs.length > 0) {
+                versionDivs[0].click();
+            }
         });
-      });
-    
-      // Auto-select the first version
-      if (versionDivs.length > 0) {
-        versionDivs[0].click();
-      }
-    });
-</script>
+    </script>
 {% endblock %}

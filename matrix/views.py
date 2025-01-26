@@ -44,10 +44,15 @@ class PackageListView(SingleTableView):
     template_name = "matrix/package_list.html"
     paginate_by = settings.PACKAGES_PER_PAGE
 
+from .graphs import get_package_graph
+
 
 def package_details(request, slug):
     package = Package.objects.prefetch_related('versions').get(slug=slug)
     versions_sorted = sorted(package.versions.prefetch_related("django_compatibility").all(), key=lambda v: Version(v.version), reverse=True)
+
+    graph_html = get_package_graph(package)
+
 
     excluded_topics = ["python", "django"]
     topics_to_match = package.topics.exclude(name__in=excluded_topics)
@@ -66,6 +71,7 @@ def package_details(request, slug):
     context = {
         "package": package,
         "versions_sorted": versions_sorted,
+        "graph_html": graph_html,
         "similar_packages": similar_packages
     }
     return render(request, 'matrix/package_details.html', context)

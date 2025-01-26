@@ -173,7 +173,6 @@ class PackageTopic(models.Model):
 
     @classmethod
     def create_topics(cls, package):
-        print("In create_topics")
         from matrix import automation
         automation.create_package_topics(package)
 
