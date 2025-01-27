@@ -30,8 +30,8 @@ def get_package_graph(package):
         height=500,
     )
 
-    fig.update_yaxes(tickformat="K", title="Stars", row=1, col=1)
-    fig.update_yaxes(title="Forks", row=2, col=1)
+    fig.update_yaxes(tickformat=",d", title="Stars", row=1, col=1)
+    fig.update_yaxes(tickformat=",d", title="Forks", row=2, col=1)
     fig.update_yaxes(tickformat=",d", title="Open Issues", row=3, col=1)
 
     # Convert Plotly figure to HTML
