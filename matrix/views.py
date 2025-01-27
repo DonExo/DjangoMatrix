@@ -5,10 +5,12 @@ from django.contrib import messages
 from django.db.models import Prefetch, Count
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.views.decorators.cache import cache_page
 
 from django_tables2.views import SingleTableView
 
 from .forms import PackageRequestForm
+from .graphs import get_package_graph
 from .models import DjangoVersion, PythonVersion, Package, Compatibility
 from .tables import PackageTable
 
@@ -38,27 +40,13 @@ def index(request):
     return render(request, "matrix/index.html", context)
 
 
-class PackageListView(SingleTableView):
-    model = Package
-    table_class = PackageTable
-    template_name = "matrix/package_list.html"
-    paginate_by = settings.PACKAGES_PER_PAGE
-
-from .graphs import get_package_graph
-
-
+@cache_page(60 * 60 * 24, key_prefix="package_details")
 def package_details(request, slug):
     package = Package.objects.prefetch_related('versions').get(slug=slug)
     versions_sorted = sorted(package.versions.prefetch_related("django_compatibility").all(), key=lambda v: Version(v.version), reverse=True)
-
     graph_html = get_package_graph(package)
-
-
     excluded_topics = ["python", "django"]
     topics_to_match = package.topics.exclude(name__in=excluded_topics)
-
-    # Find other packages that share ANY of these topics
-    # and annotate how many they have in common
     similar_packages = (
         Package.objects
                .filter(topics__name__in=topics_to_match.values_list('name', flat=True))
@@ -106,6 +94,13 @@ def package_add(request):
         form = PackageRequestForm()
 
     return render(request, 'matrix/package_add.html', {'form': form})
+
+
+class PackageListView(SingleTableView):
+    model = Package
+    table_class = PackageTable
+    template_name = "matrix/package_list.html"
+    paginate_by = settings.PACKAGES_PER_PAGE
 
 
 def custom_404(request, exception):

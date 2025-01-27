@@ -24,7 +24,7 @@ def get_package_graph(package):
     fig.add_trace(go.Scatter(x=days, y=open_issues, mode='lines+markers', name='Open Issues', line=dict(color='red'), hovertemplate=format_hovertemplate('')), row=3, col=1)
 
     fig.update_layout(
-        title="GitHub Repository Metrics (Separated)",
+        title="GitHub Repository Metrics",
         xaxis_title="Days",
         template="plotly_white",
         height=500,
@@ -35,5 +35,5 @@ def get_package_graph(package):
     fig.update_yaxes(tickformat=",d", title="Open Issues", row=3, col=1)
 
     # Convert Plotly figure to HTML
-    graph_html = fig.to_html(full_html=False, config={'displaylogo': False})
+    graph_html = fig.to_html(full_html=False, include_plotlyjs="cdn", config={'displaylogo': False})
     return graph_html

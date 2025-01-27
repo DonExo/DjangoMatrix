@@ -48,7 +48,7 @@
                 </ul>
 
                 <div class="d-flex align-items-center mb-2">
-                    <h5 class="card-title mb-0">Metrics:</h5>
+                    <h5 class="card-title mb-0">Data Metrics:</h5>
                     <small class="ms-2">(Last update: {{ package.get_last_updated|date:"M d, Y" }})</small>
                 </div>
 
@@ -102,9 +102,9 @@
         </div>
 
     
-            <!-- Metrics Graph -->
+    <!-- Metrics Graph -->
     <div class="mt-5">
-        <h4>Metrics Graph</h4>
+        <h5>Metrics Graph</h5>
         <div class="row">
             {{ graph_html|safe }}
         </div>
@@ -113,7 +113,7 @@
     <!-- Similar Packages -->
     <div class="mt-5">
         <div class="card-body d-flex align-items-center mb-2">
-            <h4 class="card-title mb-0 me-2">Similar Packages</h4>
+            <h5 class="card-title mb-0 me-2">Similar Packages</h5>
             <p class="small mb-0 ">
                 <i>Current recommendation system is based on package's Tags</i>
             </p>

@@ -96,6 +96,13 @@ DATABASES = {
     )
 }
 
+CACHES = {
+    "default": {
+        "BACKEND": env("CACHE_BACKEND", default="django.core.cache.backends.dummy.DummyCache"),
+        "LOCATION": env("CACHE_LOCATION", default=""),  # Empty for DummyCache
+    }
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
