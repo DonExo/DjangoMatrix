@@ -154,3 +154,12 @@ footer a:hover {
 }
 
 .github-fork-ribbon:before { background-color: #049063; }
+
+.aboutpage li {
+    margin-bottom: 5px;
+    line-height: 25px;
+}
+
+.aboutpage h4 {
+    margin-bottom: 10px;
+}

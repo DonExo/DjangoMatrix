@@ -1,105 +1,109 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg bg-success">
-  <div class="container-fluid">
-    <!-- Navbar Brand -->
-      <a class="navbar-brand d-flex align-items-center text-white" href="{% url 'index' %}">
-        <img src="{% static 'images/logo2.jpg' %}" alt="Logo" width="180" height="50" >
-      </a>
+    <div class="container-fluid">
+        <!-- Navbar Brand -->
+        <a class="navbar-brand d-flex align-items-center text-white" href="{% url 'index' %}">
+            <img src="{% static 'images/logo2.jpg' %}" alt="Logo" width="180" height="50">
+        </a>
 
-    <!-- Navbar Toggler -->
-    <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+        <!-- Navbar Toggler -->
+        <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <!-- Navbar Content -->
-    <div class="collapse navbar-collapse text-center p-1 rounded" id="navbarContent">
-      <!-- Left Side Links -->
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="{% url 'packages' %}">Packages</a>
-        </li>
-          {% if request.user.is_authenticated and request.user.is_superuser %}
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="{% url 'admin:index' %}">Admin</a>
-          </li>
-          {% endif %}
-      </ul>
+        <!-- Navbar Content -->
+        <div class="collapse navbar-collapse text-center p-1 rounded" id="navbarContent">
+            <!-- Left Side Links -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{% url 'packages' %}">Packages</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{% url 'about' %}">About</a>
+                </li>
+                {% if request.user.is_authenticated and request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'admin:index' %}">Admin</a>
+                    </li>
+                {% endif %}
+            </ul>
 
-      <!-- Search Field (Center) -->
-      <div class="d-flex w-100 justify-content-center my-2 my-lg-0">
-        <div class="container" style="max-width: 500px;" x-data="searchComponent()" @click.away="clearAll()">
-          <input x-model.debounce.300ms="query" type="search"
-                 class="form-control border border-success rounded" placeholder="Search for a package name...">
+            <!-- Search Field (Center) -->
+            <div class="d-flex w-100 justify-content-center my-2 my-lg-0">
+                <div class="container" style="max-width: 500px;" x-data="searchComponent()" @click.away="clearAll()">
+                    <input x-model.debounce.300ms="query" type="search"
+                           class="form-control border border-success rounded" placeholder="Find Package...">
 
-          <!-- Results Table -->
-          <template x-if="results.length > 0">
-            <table class="table table-striped mt-1 autocomplete-dropdown">
-              <tbody>
-                <template x-for="pkg in results" :key="pkg.id">
-                  <tr class="autocomplete-row" style="cursor: pointer;" @click="selectPackage(pkg)">
-                    <td x-text="pkg.name"></td>
-                  </tr>
-                </template>
-              </tbody>
-            </table>
-          </template>
+                    <!-- Results Table -->
+                    <template x-if="results.length > 0">
+                        <table class="table table-striped mt-1 autocomplete-dropdown">
+                            <tbody>
+                            <template x-for="pkg in results" :key="pkg.id">
+                                <tr class="autocomplete-row" style="cursor: pointer;" @click="selectPackage(pkg)">
+                                    <td x-text="pkg.name"></td>
+                                </tr>
+                            </template>
+                            </tbody>
+                        </table>
+                    </template>
 
-          <!-- No Results Message -->
-          <template x-if="!loading && query && results.length === 0">
-            <div class="alert alert-warning mt-0 text-center autocomplete-dropdown">
-              Not finding it? <a href="{% url 'package_add' %}" class="alert-link">Propose it sshere</a>.
+                    <!-- No Results Message -->
+                    <template x-if="!loading && query && results.length === 0">
+                        <div class="alert alert-warning mt-0 text-center autocomplete-dropdown">
+                            Not finding it? <a href="{% url 'package_add' %}" class="alert-link">Propose it here</a>.
+                        </div>
+                    </template>
+                </div>
             </div>
-          </template>
-        </div>
-      </div>
-    
-    </div>
-  </div>
-</nav>
 
+        </div>
+    </div>
+</nav>
 
 <script>
     function searchComponent() {
-      return {
-        query: '',
-        results: [],
-        loading: false,
+        return {
+            query: '',
+            results: [],
+            loading: false,
 
-        init() {
-          // Watch for changes in the query and fetch results
-          this.$watch('query', (newQuery) => {
-            if (newQuery.length < 1) {
-              this.results = [];
-              this.loading = false;
-              return;
+            init() {
+                // Watch for changes in the query and fetch results
+                this.$watch('query', (newQuery) => {
+                    if (newQuery.length < 1) {
+                        this.results = [];
+                        this.loading = false;
+                        return;
+                    }
+                    this.fetchPackages();
+                });
+            },
+
+            fetchPackages() {
+                this.loading = true;
+                fetch(`/packages/search/?q=${encodeURIComponent(this.query)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        this.results = data.results;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching packages:', error);
+                        this.results = [];
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                    });
+            },
+            selectPackage(pkg) {
+                window.location.href = `/packages/${pkg.slug}/`;
+            },
+            clearAll() {
+                this.query = '';
+                this.results = [];
+                this.loading = false;
             }
-            this.fetchPackages();
-          });
-        },
-
-        fetchPackages() {
-          this.loading = true;
-          fetch(`/packages/search/?q=${encodeURIComponent(this.query)}`)
-            .then(response => response.json())
-            .then(data => {
-              this.results = data.results;
-            })
-            .catch(error => {
-              console.error('Error fetching packages:', error);
-              this.results = [];
-            })
-            .finally(() => {
-              this.loading = false;
-            });
-        },
-        selectPackage(pkg) {
-          window.location.href = `/packages/${pkg.slug}/`;
-        },
-        clearAll() {
-          this.query = '';
-          this.results = [];
-          this.loading = false;
         }
-      }
     }
 </script>

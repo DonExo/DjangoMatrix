@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}About{% endblock %}
+
+{% block content %}
+    <div class="container mt-5 aboutpage">
+        <h2 class="mb-4">About DjangoMatrix</h2>
+
+        <p>
+            <b>DjangoMatrix</b> is a community-driven platform dedicated to helping Django developers explore, compare, and
+            stay up-to-date with the vast ecosystem of Django packages. Whether you’re building a personal project or
+            working on large-scale enterprise applications, DjangoMatrix strives to make your search for reliable,
+            compatible packages more efficient and informed.
+
+        </p>
+        <h4>What You’ll Find Here</h4>
+        <ol>
+            <li>
+                <b>Curated Package Listings</b><br/>
+                Browse a growing collection of Django packages—from essential utilities to specialized tools—along with
+                detailed descriptions, version data, and resource links. Our library keeps expanding, thanks to
+                community contributions.
+            </li>
+            <li>
+                <b>Compatibility Matrix</b><br/>
+                Each package page highlights its compatibility with various Django versions so you can quickly confirm
+                whether a package works with your project’s setup. This saves you time and reduces the risk of
+                dependency issues down the road.
+            </li>
+            <li>
+                <b>Insightful Metrics</b><br/>
+                We provide real-time metrics such as GitHub stars, forks, open issues, and last commit dates—helpful
+                at-a-glance indicators of a project’s activity and popularity.
+            </li>
+            <li>
+                <b>Search & Recommendation</b><br/>
+                An intuitive search bar helps you quickly locate packages by name or keyword. DjangoMatrix also
+                recommends similar packages based on shared tags, enabling you to discover alternative or complementary
+                solutions.
+            </li>
+            <li>
+                <b>Community Contributions</b><br/>
+                Have a Django package you’d like to add or update? DjangoMatrix welcomes user suggestions and edits. All
+                you need to do is propose a package or contribute to our open-source repository on GitHub.
+            </li>
+        </ol>
+
+        <h4>Example in Action</h4>
+        <p>
+            A typical package page—like our listing for <b><a href="{% url 'package_details' 'cookiecutter-django' %}">Cookiecutter Django</a> </b> — shows an overview of the project, its latest
+        versions, compatibility notes, usage metrics, and links to the repository or documentation. You can also find a
+        recommended list of similar packages to explore further.
+        </p>
+
+        <h4>Why DjangoMatrix?</h4>
+
+        <ul>
+            <li><b>Time-Saving:</b> Instead of sifting through multiple sources, quickly find crucial compatibility info and metrics all in one place.</li>
+            <li><b>Confidence:</b> Up-to-date data on package health and popularity helps you pick the right dependencies.</li>
+            <li><b>Community-Driven:</b> By incorporating user feedback and contributions, the platform remains relevant and continuously improving.</li>
+            <li><b>Open Source:</b> We believe in transparency and collective effort—our code is available on GitHub for anyone to review or contribute.</li>
+        </ul>
+
+        <h4> Get Involved</h4>
+
+        <ul>
+            <li><b>Share Your Favorite Packages:</b> Got a hidden gem that isn’t listed? <a href="{% url 'package_add' %}">Add it to our collection</a>, so the Django community can benefit.</li>
+            <li>
+                <b>Give Feedback:</b>
+                Notice something out of date or missing?
+                Help us keep the site accurate by
+                {% with "https://github.com/DonExo/DjangoMatrix/" as github_url %}
+                <a href="{{ github_url }}/issues">reporting issues</a>,
+                <a href="{{ github_url }}/pulls">submitting a pull request</a> or just
+                <a href="{{ github_url }}/discussions">chat about incompatibilities</a> or other things.
+                {% endwith %}
+            </li>
+            <li><b>Spread the Word:</b> By incorporating user feedback and contributions, the platform remains relevant and continuously improving.</li>
+            <li><b>Open Source:</b> If DjangoMatrix has helped you, share it with others! The more users who participate, the richer our data becomes.</li>
+        </ul>
+
+        <hr/>
+
+        We hope <b>DjangoMatrix</b> becomes your go-to resource for discovering and evaluating Django packages. <br/>
+        Whether you’re new to Django or a seasoned pro, we’re here to support your journey by making package research faster, easier, and more collaborative.
+    </div>
+
+{% endblock %}
