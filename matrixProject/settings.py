@@ -34,6 +34,8 @@ PACKAGES_PER_PAGE = env.int('PACKAGES_PER_PAGE', default=100)
 
 USE_THOUSAND_SEPARATOR = True
 
+ADMIN_URL_PATH = env('DJANGO_ADMIN_PATH', default='admin/')
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -85,10 +87,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'matrixProject.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
     'default': env.db(
