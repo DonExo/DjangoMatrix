@@ -24,7 +24,7 @@ def get_package_graph(package):
     fig.add_trace(go.Scatter(x=days, y=open_issues, mode='lines+markers', name='Open Issues', line=dict(color='red'), hovertemplate=format_hovertemplate('')), row=3, col=1)
 
     fig.update_layout(
-        title="GitHub Repository Metrics",
+        title="Last 30 Days",
         xaxis_title="Days",
         template="plotly_white",
         height=500,

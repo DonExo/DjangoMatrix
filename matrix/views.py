@@ -101,7 +101,22 @@ class PackageListView(SingleTableView):
     model = Package
     table_class = PackageTable
     template_name = "matrix/package_list.html"
-    paginate_by = settings.PACKAGES_PER_PAGE
+    paginate_by = settings.PACKAGES_PER_PAGE_DEFAULT
+
+    def get_paginate_by(self, queryset):
+        per_page = self.request.GET.get('per_page', settings.PACKAGES_PER_PAGE_DEFAULT)
+        try:
+            per_page = int(per_page)
+            if per_page in settings.PACKAGES_PER_PAGE_OPTIONS:
+                return per_page
+            return self.paginate_by
+        except (ValueError, TypeError):
+            return self.paginate_by
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['per_page_options'] = settings.PACKAGES_PER_PAGE_OPTIONS
+        return context
 
 
 def custom_404(request, exception):

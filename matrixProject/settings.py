@@ -30,7 +30,8 @@ SECRET_KEY = env("SECRET_KEY", default="django-insecure-xnv5ffvt@8)6%8*3j4f6&5qt
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
 
-PACKAGES_PER_PAGE = env.int('PACKAGES_PER_PAGE', default=100)
+PACKAGES_PER_PAGE_DEFAULT = 10
+PACKAGES_PER_PAGE_OPTIONS = [10, 25, 50, 100]
 
 USE_THOUSAND_SEPARATOR = True
 
