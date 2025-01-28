@@ -4,14 +4,16 @@
 <html lang="en">
 <head>
     <title>{% block title %}{% endblock %} | DjangoMatrix.com</title>
+    {% block meta_description %}{% endblock %}
     <meta charset="utf-8">
+    <meta name="robots" content="index, follow" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
+    <link rel="canonical" href="https://djangomatrix.com/" />
     <script src="//unpkg.com/alpinejs" defer></script>
     <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.jpg' %}">
-
     <!-- Local static files -->
     <link rel="stylesheet" href="{% static 'css/matrix.css' %}">
 </head>

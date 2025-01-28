@@ -2,6 +2,9 @@
 {% load humanize %}
 
 {% block title %}{{ package.name }}{% endblock %}
+{% block meta_description %}
+    <meta name="description" content="{{ package.name }} - {{ package.description }}">
+{% endblock %}
 
 {% block content %}
     <div class="container mt-5">
