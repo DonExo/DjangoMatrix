@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load humanize %}
 
-{% block title %}Package info{% endblock %}
+{% block title %}{{ package.name }}{% endblock %}
 
 {% block content %}
     <div class="container mt-5">
@@ -163,9 +163,10 @@
                 });
             });
 
-            // Auto-select the first version
-            if (versionDivs.length > 0) {
-                versionDivs[0].click();
+            if (versionDivs.length === 0) {
+              detailsArea.innerHTML = "<p>At the moment we don't have data on compatibilities.</p>";
+            } else {
+              versionDivs[0].click();
             }
         });
     </script>
