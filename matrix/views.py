@@ -4,7 +4,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.db.models import Prefetch, Count
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.cache import cache_page
 
 from django_tables2.views import SingleTableView
@@ -42,18 +42,19 @@ def index(request):
 
 @cache_page(60 * 60 * 24, key_prefix="package_details")
 def package_details(request, slug):
-    package = Package.objects.prefetch_related('versions').get(slug=slug)
-    versions_sorted = sorted(package.versions.prefetch_related("django_compatibility").all(), key=lambda v: Version(v.version), reverse=True)
+    package = get_object_or_404(Package.objects.prefetch_related('versions'), slug=slug)
+    versions_sorted = sorted(package.versions.prefetch_related("django_compatibility").all(),
+                             key=lambda v: Version(v.version), reverse=True)
     graph_html = get_package_graph(package)
     excluded_topics = ["python", "django"]
     topics_to_match = package.topics.exclude(name__in=excluded_topics)
     similar_packages = (
         Package.objects
-               .filter(topics__name__in=topics_to_match.values_list('name', flat=True))
-               .exclude(pk=package.pk)
-               .annotate(shared_topic_count=Count('topics__name'))
-               .order_by('-shared_topic_count')
-               .distinct()
+        .filter(topics__name__in=topics_to_match.values_list('name', flat=True))
+        .exclude(pk=package.pk)
+        .annotate(shared_topic_count=Count('topics__name'))
+        .order_by('-shared_topic_count')
+        .distinct()
     )
 
     context = {
