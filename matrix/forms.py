@@ -2,7 +2,7 @@ from urllib.parse import urlparse
 
 from django import forms
 
-from matrix.models import PackageRequest
+from matrix.models import PackageRequest, ContactMessage
 
 
 class PackageRequestForm(forms.ModelForm):
@@ -29,3 +29,9 @@ class PackageRequestForm(forms.ModelForm):
         if errors:
             raise forms.ValidationError(errors)
         return repo_url
+
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = ContactMessage
+        fields = ['name', 'email', 'message']

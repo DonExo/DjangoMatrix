@@ -2,7 +2,7 @@ from django.contrib import admin, messages
 from django.core.exceptions import ValidationError
 
 from .models import DjangoVersion, PythonVersion, Compatibility, Package, PackageVersion, PackageRepoStats, \
-    PackageRequest, PackageTopic
+    PackageRequest, PackageTopic, ContactMessage
 
 
 class CompatibilityInline(admin.TabularInline):
@@ -10,14 +10,17 @@ class CompatibilityInline(admin.TabularInline):
     extra = 1
     autocomplete_fields = ['django_version']
 
+
 class PackageVersionInline(admin.TabularInline):
     model = PackageVersion
     extra = 0
+
 
 @admin.register(DjangoVersion)
 class DjangoVersionAdmin(admin.ModelAdmin):
     list_display = ('version', 'release_date')
     search_fields = ['version']
+
 
 @admin.register(PythonVersion)
 class PythonVersionAdmin(admin.ModelAdmin):
@@ -53,6 +56,13 @@ class PackageRepoStatsAdmin(admin.ModelAdmin):
 class PackageTopicAdmin(admin.ModelAdmin):
     list_display = ('package', 'name')
     search_fields = ['name']
+
+
+@admin.register(ContactMessage)
+class ContactMessageAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'created_at', 'status')
+    search_fields = ['name', 'email']
+    list_filter = ('status', )
 
 
 @admin.register(PackageRequest)

@@ -7,6 +7,7 @@ from django.views.generic import TemplateView
 
 from matrixProject.settings import ADMIN_URL_PATH
 from .sitemaps import PackageSitemap, StaticViewSitemap
+from matrix.views import contact_view
 
 sitemaps = {
     'packages': PackageSitemap(),
@@ -17,6 +18,7 @@ sitemaps = {
 urlpatterns = [
     path('', include('matrix.urls')),
     path('about/', TemplateView.as_view(template_name='about.html'), name='about'),
+    path('contact/', contact_view, name='contact'),
     path(ADMIN_URL_PATH, admin.site.urls),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 

@@ -1,20 +1,17 @@
 {% extends 'base.html' %}
 {% load crispy_forms_filters %}
 
-{% block title %}Add Package{% endblock %}
+{% block title %}Contact us{% endblock %}
 {% block meta_description %}
-    <meta name="description" content="Can't find the Django package you are looking for? Propose it here.">
+    <meta name="description" content="Get in touch with DjangoMatrix.com webmaster.">
 {% endblock %}
 
 {% block content %}
     <div class="container mt-5 col-md-6">
-        <h1 class="mb-4">Package Submission</h1>
+        <h1 class="mb-4">Get in touch</h1>
         <form method="post" class="needs-validation" novalidate>
             <p>
-                Looking for a specific package?
-                <br/>If you can't find the package you're looking for, feel free to submit a request using the form below. Our team will review your submission promptly and ensure it meets the required standards.
-                <br/><br/>Or if you want to get in touch for something else - <a href="{% url 'contact' %}">here.</a><br/>
-                <br/>Thank you for contributing to our growing collection!
+                If you've found some inconsistent/incompatible data, or want to report a bug OR maybe just want to say "<b>Thank you!</b>" - feel free to reach out.
             </p>
 
             {% if form.non_field_errors %}

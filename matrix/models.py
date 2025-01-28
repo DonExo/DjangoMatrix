@@ -190,3 +190,22 @@ class Compatibility(models.Model):
 
     def __str__(self):
         return f"{self.django_version} - {self.python_version}"
+
+
+class ContactMessage(models.Model):
+    STATUS_CHOICES = [
+        ('NEW', 'New'),
+        ('SEEN', 'Seen'),
+        ('REPLIED', 'Replied'),
+        ('IGNORING', 'Ignoring'),
+    ]
+
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    ip_address = models.GenericIPAddressField(blank=True, null=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='NEW')
+
+    def __str__(self):
+        return self.name

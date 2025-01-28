@@ -1,3 +1,4 @@
+from django.core.mail import send_mail
 from packaging.version import Version
 
 from django.conf import settings
@@ -9,7 +10,7 @@ from django.views.decorators.cache import cache_page
 
 from django_tables2.views import SingleTableView
 
-from .forms import PackageRequestForm
+from .forms import PackageRequestForm, ContactForm
 from .graphs import get_package_graph
 from .models import DjangoVersion, PythonVersion, Package, Compatibility
 from .tables import PackageTable
@@ -117,6 +118,23 @@ class PackageListView(SingleTableView):
         context = super().get_context_data(**kwargs)
         context['per_page_options'] = settings.PACKAGES_PER_PAGE_OPTIONS
         return context
+
+
+def contact_view(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            contact_message = form.save(commit=False)
+            contact_message.ip_address = request.META.get('REMOTE_ADDR')  # Add the IP address
+            contact_message.save()
+            messages.info(request, "Your message has been sent. Thank you!")
+            return redirect('index')
+        else:
+            messages.error(request, "There has been an error. Please try again.")
+    else:
+        form = ContactForm()
+
+    return render(request, 'contact.html', {'form': form})
 
 
 def custom_404(request, exception):
