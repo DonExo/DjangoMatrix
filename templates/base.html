@@ -14,9 +14,10 @@
     <link rel="canonical" href="https://djangomatrix.com/" />
     <script src="//unpkg.com/alpinejs" defer></script>
     <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.jpg' %}">
-    <script defer data-domain="djangomatrix.com" src="https://plausible.io/js/script.outbound-links.js"></script>
-    <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
-
+    {% if not debug %}
+        <script defer data-domain="djangomatrix.com" data-api="/plausible/api/event" src="/plausible/js/script.js"></script>
+        <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+    {% endif %}
     <!-- Local static files -->
     <link rel="stylesheet" href="{% static 'css/matrix.css' %}">
 </head>

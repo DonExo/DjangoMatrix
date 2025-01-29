@@ -16,7 +16,9 @@ DEBUG = env("DEBUG", default=False)
 SENTRY_DSN = env("SENTRY_DSN", default=None)
 SENTRY_ENVIRONMENT = env("SENTRY_ENVIRONMENT", default="dev")
 
-if not DEBUG:
+if DEBUG:
+    INTERNAL_IPS = ["127.0.0.1"]  # For local development
+else:
     sentry_sdk.init(
         dsn=SENTRY_DSN,
         integrations=[DjangoIntegration()],
