@@ -37,6 +37,8 @@ USE_THOUSAND_SEPARATOR = True
 
 ADMIN_URL_PATH = env('DJANGO_ADMIN_PATH', default='admin/')
 
+FORMS_URLFIELD_ASSUME_HTTPS=True
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

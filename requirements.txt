@@ -5,6 +5,7 @@ gunicorn==23.0.0
 pytest==8.3.4
 pytest-django==4.9.0
 django-crispy-forms==2.3
+pytest-mock==3.14.0
 crispy-bootstrap5==2024.10
 sentry-sdk==2.20.0
 django-tables2==2.7.5
