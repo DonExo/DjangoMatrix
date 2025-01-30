@@ -151,6 +151,10 @@ footer a:hover {
     .info-message {
         width: 60%;
     }
+
+    .github-fork-ribbon{
+        display: none;
+    }
 }
 
 .github-fork-ribbon:before { background-color: #049063; }
