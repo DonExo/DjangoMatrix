@@ -43,6 +43,7 @@ class PackageAdmin(admin.ModelAdmin):
 @admin.register(PackageVersion)
 class PackageVersionAdmin(admin.ModelAdmin):
     list_display = ('package', 'version', 'release_date')
+    search_fields = ('package__name', )
 
 
 @admin.register(PackageRepoStats)
