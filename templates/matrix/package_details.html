@@ -15,12 +15,12 @@
                 <h2 class="mb-1">{{ package.name }}</h2>
                 <h5 class="mb-0 ms-auto">latest version: {{ package.get_latest_version }}</h5>
             </div>
-            <div class="card-body">
+            <div class="card-body mt-2">
                 <h5 class="card-title">Description:</h5>
                 <p class="card-text">{{ package.description }}</p>
 
                 <h5 class="card-title">Compatibility Matrix:</h5>
-                <div class="d-flex mb-1 " style="gap: 0.1rem;" id="versionsRow">
+                <div class="d-flex mb-1" style="gap: 0.1rem;" id="versionsRow">
                     {% for version in versions_sorted %}
                         <div
                                 class="flex-fill border p-3 text-center version-choice"
@@ -34,8 +34,14 @@
                 </div>
 
                 <!-- Compatible Django Versions -->
-                <div class="p-3 text-center" id="selectedVersionDetails">
-                </div>
+                {% if not package.slug == "django" %}
+                    <div class="p-3 text-center" id="selectedVersionDetails">
+                    </div>
+                {% else %}
+                    <div class="p-3 text-center">
+                    <p>Makes no sense adding compatibilities for Django itself...</p>
+                    </div>
+                {% endif %}
 
                 <br/>
                 <h5 class="card-title">Links:</h5>
@@ -58,7 +64,13 @@
 
                 <div class="d-flex align-items-center mb-2">
                     <h5 class="card-title mb-0">Data Metrics:</h5>
-                    <small class="ms-2">(Last update: {{ package.get_last_updated|date:"M d, Y" }})</small>
+                    <small class="ms-2">(Last update: {{ package.get_last_updated|date:"M d, Y" }})</small> &nbsp;
+                    <span
+                            class="bi bi-info-circle "
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="right"
+                            title="Daily updates">
+                    </span>
                 </div>
 
                 <ul class="list-group">
