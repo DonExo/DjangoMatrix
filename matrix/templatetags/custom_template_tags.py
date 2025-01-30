@@ -1,3 +1,7 @@
+from datetime import timedelta
+
+from django.conf import settings
+from django.utils import timezone
 from django import template
 
 register = template.Library()
@@ -23,3 +27,11 @@ def contains_character(value, arg):
     Usage: {{ value|contains:"substring" }}
     """
     return arg in value[0] if value else False
+
+
+@register.filter
+def is_older_than_3_years(value):
+    if not value:
+        return False
+    three_years_ago = timezone.now() - timedelta(days=settings.DAYS_UNMAINTAINED)
+    return value < three_years_ago

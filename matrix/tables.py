@@ -1,4 +1,9 @@
+from datetime import timedelta
+
 import django_tables2 as tables
+from django.conf import settings
+from django.utils import timezone
+from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
 from .models import Package
@@ -49,3 +54,18 @@ class PackageTable(tables.Table):
 
     def render_row_number(self, record):
         return mark_safe(f"<b>{list(self.data).index(record) + 1}</b>")
+
+    def render_name(self, record):
+        name_html = format_html('<span>{} </span>', record.name)
+
+        # Add "Unmaintained" badge conditionally
+        if record.metric_last_commit:
+            three_years_ago = timezone.now() - timedelta(days=settings.DAYS_UNMAINTAINED)
+            if record.metric_last_commit < three_years_ago:
+                tooltip_html = format_html(
+                    ' <span data-bs-toggle="tooltip" data-bs-placement="right" '
+                    'title="This package hasn\'t been updated or maintained in over 3 years.">⚠️</span>'
+                )
+                return name_html + tooltip_html
+
+        return name_html
