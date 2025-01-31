@@ -24,7 +24,9 @@
 
 <body>
     {% include "navbar.html" %}
-    {% include '_includes/contribute.html' %}
+    {% if not debug %}
+        {% include '_includes/contribute.html' %}
+    {% endif %}
     {% include '_includes/toast.html' %}
 
     <div id="wrapper">
