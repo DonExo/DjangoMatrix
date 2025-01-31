@@ -2,36 +2,63 @@
 {% load django_tables2 %}
 
 {% block title %}Packages{% endblock %}
-{% block meta_description %}
-    <meta name="description"
-          content="List all the latest Django packages. Check latest metrics data in one place! Sort them by Github Stars, Forks and more.">
-{% endblock %}
 
 {% block content %}
-    <div class="container mt-5">
+<div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>List Django Packages / Libraries</h2>
-        <form method="get" class="mb-0" style="width: 180px;">
-            {% for key, value in request.GET.items %}
-                {% if key != 'per_page' and key != 'page' %}
-                    <input type="hidden" name="{{ key }}" value="{{ value }}">
-                {% endif %}
-            {% endfor %}
-            <div class="input-group">
-                <label class="input-group-text" for="per_page">Per Page:</label>
-                <select name="per_page" class="form-select" onchange="this.form.submit()">
-                    {% for option in per_page_options %}
-                        <option value="{{ option }}" {% if table.paginator.per_page == option %}selected{% endif %}>{{ option }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-        </form>
+        <div class="d-flex gap-3 align-items-center">
+            <form method="get" class="d-flex gap-2">
+                {% for key, value in request.GET.items %}
+                    {% if key != 'search' and key != 'page' and key != 'per_page' %}
+                        <input type="hidden" name="{{ key }}" value="{{ value }}">
+                    {% endif %}
+                {% endfor %}
+                <div class="input-group input-group-md" style="width: 250px;">
+                    <input type="text"
+                           name="search"
+                           value="{{ filter.form.search.value|default:'' }}"
+                           class="form-control"
+                           placeholder="Search packages...">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-search"></i>
+                    </button>
+                    {% if filter.form.search.value %}
+                        <a href="?{% if request.GET.per_page %}per_page={{ request.GET.per_page }}{% endif %}"
+                           class="btn btn-outline-secondary">
+                            <i class="bi bi-x-lg"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            </form>
+
+            <form method="get" class="mb-0" style="width: 180px;">
+                {% for key, value in request.GET.items %}
+                    {% if key != 'per_page' and key != 'page' %}
+                        <input type="hidden" name="{{ key }}" value="{{ value }}">
+                    {% endif %}
+                {% endfor %}
+                <div class="input-group">
+                    <label class="input-group-text" for="per_page">Per Page:</label>
+                    <select name="per_page" class="form-select" onchange="this.form.submit()">
+                        {% for option in per_page_options %}
+                            <option value="{{ option }}" {% if table.paginator.per_page == option %}selected{% endif %}>{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </form>
+        </div>
     </div>
 
     {% render_table table "django_tables2/bootstrap5.html" %}
+
+    {% if filter.form.search.value and not table.page.object_list %}
+        <div class="alert alert-warning mt-3">
+            No packages found matching "{{ filter.form.search.value }}"
+        </div>
+    {% endif %}
 </div>
 
-    <br/>
-    <h5 align="center">Can't find what you're looking for? <a href="{% url 'package_add' %}">Propose it here</a></h5>
-
+<br/>
+<h5 align="center">Can't find what you're looking for? <a href="{% url 'package_add' %}">Propose it here</a></h5>
 {% endblock %}

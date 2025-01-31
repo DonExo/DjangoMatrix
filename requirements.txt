@@ -9,6 +9,7 @@ pytest-mock==3.14.0
 crispy-bootstrap5==2024.10
 sentry-sdk==2.20.0
 django-tables2==2.7.5
+django-filter==24.3
 django-extensions==3.2.3
 plotly==5.24.1
 pymemcache==4.0.0

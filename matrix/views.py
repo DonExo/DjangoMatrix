@@ -1,4 +1,3 @@
-from django.core.mail import send_mail
 from packaging.version import Version
 
 from django.conf import settings
@@ -8,8 +7,11 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.cache import cache_page
 
+from django_filters.views import BaseFilterView
+from django_tables2 import RequestConfig
 from django_tables2.views import SingleTableView
 
+from .filters import PackageFilter
 from .forms import PackageRequestForm, ContactForm
 from .graphs import get_package_graph
 from .models import DjangoVersion, PythonVersion, Package, Compatibility
@@ -41,7 +43,7 @@ def index(request):
     return render(request, "matrix/index.html", context)
 
 
-@cache_page(60 * 60 * 24, key_prefix="package_details")
+@cache_page(60 * 60 * 24, key_prefix="package_details")  # Cache for 24 hours
 def package_details(request, slug):
     package = get_object_or_404(Package.objects.prefetch_related('versions'), slug=slug)
     versions_sorted = sorted(package.versions.prefetch_related("django_compatibility").all(),
@@ -98,26 +100,31 @@ def package_add(request):
     return render(request, 'matrix/package_add.html', {'form': form})
 
 
-class PackageListView(SingleTableView):
+class PackageListView(BaseFilterView, SingleTableView):
     model = Package
     table_class = PackageTable
     template_name = "matrix/package_list.html"
     paginate_by = settings.PACKAGES_PER_PAGE_DEFAULT
+    filterset_class = PackageFilter
 
-    def get_paginate_by(self, queryset):
-        per_page = self.request.GET.get('per_page', settings.PACKAGES_PER_PAGE_DEFAULT)
-        try:
-            per_page = int(per_page)
-            if per_page in settings.PACKAGES_PER_PAGE_OPTIONS:
-                return per_page
-            return self.paginate_by
-        except (ValueError, TypeError):
-            return self.paginate_by
+    def get_queryset(self):
+        qs = super().get_queryset()
+        self.filterset = self.filterset_class(self.request.GET, queryset=qs)  # apply filters
+        return self.filterset.qs.distinct()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        RequestConfig(self.request,paginate={'per_page': self.get_paginate_by()}).configure(context['table'])
+        context['filter'] = self.filterset
         context['per_page_options'] = settings.PACKAGES_PER_PAGE_OPTIONS
         return context
+
+    def get_paginate_by(self, queryset=None):
+        per_page = self.request.GET.get('per_page', settings.PACKAGES_PER_PAGE_DEFAULT)
+        try:
+            return int(per_page)
+        except (ValueError, TypeError):
+            return settings.PACKAGES_PER_PAGE_DEFAULT
 
 
 def contact_view(request):

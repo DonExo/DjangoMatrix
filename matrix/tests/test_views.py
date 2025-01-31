@@ -1,3 +1,4 @@
+from django.conf import settings
 from packaging.version import Version
 from django.urls import reverse
 import pytest
@@ -105,14 +106,19 @@ class TestViews:
         # Check first page with ?per_page=10
         response_page1 = client.get(url, {'page': 1, 'per_page': 10})
         assert response_page1.status_code == 200
+        # Get the table's paginated data
+        table = response_page1.context['table']
+        page_obj = table.page
+        assert len(page_obj.object_list) == 10  # Items per page
         assert 'package_list' in response_page1.context
-        assert len(response_page1.context['package_list']) == 10
 
         # Check second page
         response_page2 = client.get(url, {'page': 2, 'per_page': 10})
         assert response_page2.status_code == 200
-        assert 'package_list' in response_page2.context
-        assert len(response_page2.context['package_list']) == 5
+        table = response_page2.context['table']
+        page_obj = table.page
+        assert len(page_obj.object_list) == 5
+        assert 'package_list' in response_page1.context
 
         content_page1 = response_page1.content.decode()
         assert "next" in content_page1.lower(), "Expected 'next' pagination link on first page"
@@ -123,12 +129,13 @@ class TestViews:
         # Check first page with ?per_page=25
         response_page3 = client.get(url, {'page': 1, 'per_page': 25})
         assert response_page3.status_code == 200
+        table = response_page3.context['table']
+        page_obj = table.page
+        assert len(page_obj.object_list) == 15
         assert 'package_list' in response_page3.context
-        assert len(response_page3.context['package_list']) == 15
 
         # Make sure pagination links are not shown, as there is only one page
         assert "pagination" not in response_page3.context, "Expected 'pagination' link not to be present"
-
 
     def test_version_sorting(self):
         pkg = Package.objects.create(name="Version Sorting")
@@ -143,3 +150,67 @@ class TestViews:
             reverse=True
         )
         assert [v.version for v in sorted_versions] == ['2.0', '2.0a', '1.1', '1.0', '1.0rc']
+
+    def test_package_search_with_pagination(self, client):
+        # Create 15 packages - 12 with "Django" in name, 3 without
+        for i in range(1, 13):
+            Package.objects.create(
+                name=f"Django Package {i}",
+                description=f"Django-related package {i}",
+            )
+        for i in range(1, 4):
+            Package.objects.create(
+                name=f"Flask Package {i}",
+                description=f"Flask-related package {i}",
+            )
+        url = reverse('packages')
+
+        # Test basic search (should find 12 Django packages)
+        response = client.get(url, {'search': 'Django'})
+        assert response.status_code == 200
+        table = response.context['table']
+        assert table.paginator.count == 12  # Total matching items
+        assert len(table.page.object_list) == 12
+
+        # Test search with per_page=10
+        response_page1 = client.get(url, {'search': 'Django', 'page': 1, 'per_page': 10})
+        table_page1 = response_page1.context['table']
+        assert len(table_page1.page.object_list) == 10
+        assert table_page1.page.has_next() is True
+
+        response_page2 = client.get(url, {'search': 'Django', 'page': 2, 'per_page': 10})
+        table_page2 = response_page2.context['table']
+        assert len(table_page2.page.object_list) == 2
+        assert table_page2.page.has_previous() is True
+
+        # Test search with per_page=5
+        response_page1_small = client.get(url, {'search': 'Django', 'page': 1, 'per_page': 5})
+        table_page1_small = response_page1_small.context['table']
+        assert len(table_page1_small.page.object_list) == 5
+        assert table_page1_small.paginator.num_pages == 3
+
+        # Test search with no results
+        response_empty = client.get(url, {'search': 'NonExistentPackage'})
+        table_empty = response_empty.context['table']
+        assert table_empty.paginator.count == 0
+        assert "No packages found" in response_empty.content.decode()
+
+        # Test search preserves parameters in pagination links
+        content = response_page1.content.decode()
+        assert '?search=Django&amp;page=2&amp;per_page=10' in content  # Check encoded next link
+        assert 'per_page=10' in content
+
+        # Test mixed case search (if your search is case-insensitive)
+        response_mixed_case = client.get(url, {'search': 'dJaNgO'})
+        assert response_mixed_case.context['table'].paginator.count == 12
+
+        # Test search with special characters
+        Package.objects.create(name="Django-Special!", description="With special chars")
+        response_special = client.get(url, {'search': 'Django-Special!'})
+        assert response_special.context['table'].paginator.count == 1
+
+        # Test search with pagination and filter clearing
+        if 'search' in response_page1.context['filter'].form.data:
+            clear_url = f"{url}?per_page=10"
+            response_cleared = client.get(clear_url)
+            assert response_cleared.context['table'].paginator.count == 16  # Default 15 + last special one
