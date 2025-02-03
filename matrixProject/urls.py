@@ -16,10 +16,11 @@ sitemaps = {
 
 
 urlpatterns = [
+    path(ADMIN_URL_PATH, admin.site.urls),
     path('', include('matrix.urls')),
     path('about/', TemplateView.as_view(template_name='about.html'), name='about'),
+    path('privacy/', TemplateView.as_view(template_name='privacy.html'), name='privacy'),
     path('contact/', contact_view, name='contact'),
-    path(ADMIN_URL_PATH, admin.site.urls),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
