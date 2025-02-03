@@ -19,7 +19,11 @@
                 <h5 class="card-title">Description:</h5>
                 <p class="card-text">{{ package.description }}</p>
 
-                <h5 class="card-title">Compatibility Matrix:</h5>
+                {% if not package.slug == "django" %}
+                    <h5 class="card-title">Compatibility Matrix:</h5>
+                {% else %}
+                    <h5 class="card-title">LTS Versions:</h5>
+                {% endif %}
                 <div class="d-flex mb-1" style="gap: 0.1rem;" id="versionsRow">
                     {% for version in versions_sorted %}
                         <div
