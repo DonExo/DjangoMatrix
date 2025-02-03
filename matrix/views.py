@@ -33,12 +33,14 @@ def index(request):
         )
     ).all()
 
-    packages = Package.objects.all()[:10]
+    packages = Package.objects.all()
+    most_popular_packages = packages[:10]
 
     context = {
         'python_versions': python_versions,
         'django_versions': django_versions,
-        'most_popular_packages': packages,
+        'most_popular_packages': most_popular_packages,
+        'packages_count': packages.count(),
     }
     return render(request, "matrix/index.html", context)
 
