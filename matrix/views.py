@@ -132,7 +132,13 @@ def contact_view(request):
         form = ContactForm(request.POST)
         if form.is_valid():
             contact_message = form.save(commit=False)
-            contact_message.ip_address = request.META.get('REMOTE_ADDR')  # Add the IP address
+            # Extract client IP from X-Forwarded-For header
+            x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR', '')
+            if x_forwarded_for:
+                client_ip = x_forwarded_for.split(',')[0].strip()
+            else:
+                client_ip = request.META.get('REMOTE_ADDR', '')
+            contact_message.ip_address = client_ip
             contact_message.save()
             messages.info(request, "Your message has been sent. Thank you!")
             return redirect('index')
