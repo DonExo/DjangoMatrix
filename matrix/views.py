@@ -147,12 +147,12 @@ def contact_view(request):
     else:
         form = ContactForm()
 
-    return render(request, 'contact.html', {'form': form})
+    return render(request, '__pages/contact.html', {'form': form})
 
 
 def custom_404(request, exception):
-    return render(request, '404.html', status=404)
+    return render(request, '__pages/404.html', status=404)
 
 
 def custom_500(request, exception):
-    return render(request, '404.html', {"foo": "bar"}, status=500)
+    return render(request, '__pages/404.html', status=500)
