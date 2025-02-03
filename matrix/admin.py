@@ -37,6 +37,7 @@ class CompatibilityAdmin(admin.ModelAdmin):
 class PackageAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
     list_display = ('name', 'slug', 'metric_stars', 'metric_forks')
+    search_fields = ['name', 'slug']
     inlines = [PackageVersionInline]
 
 
