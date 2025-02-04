@@ -27,7 +27,7 @@
                                 data-version-label="{{ version.version }}"
                                 data-django-compat="{% for dj in version.django_compatibility.all %}<b>{{ dj.version }}</b> ✅ {% if not forloop.last %} | {% endif %}{% endfor %}"
                         >
-                            <strong>{{ version.version }}</strong>
+                            <strong>{{ version.version|major_minor }}</strong>
                         </div>
                     {% endfor %}
 

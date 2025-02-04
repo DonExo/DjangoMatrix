@@ -31,12 +31,14 @@ class PythonVersionAdmin(admin.ModelAdmin):
 @admin.register(Compatibility)
 class CompatibilityAdmin(admin.ModelAdmin):
     list_display = ('id', 'django_version', 'python_version', 'package', 'version')
+    list_filter = ('django_version', 'python_version')
 
 
 @admin.register(Package)
 class PackageAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
     list_display = ('name', 'slug', 'metric_stars', 'metric_forks')
+    search_fields = ['name__icontains', 'slug__icontains', 'description__icontains']
     inlines = [PackageVersionInline]
 
 

@@ -35,3 +35,9 @@ def is_older_than_3_years(value):
         return False
     three_years_ago = timezone.now() - timedelta(days=settings.DAYS_UNMAINTAINED)
     return value < three_years_ago
+
+
+@register.filter
+def major_minor(version):
+    parts = version.split('.')
+    return '.'.join(parts[:2])
