@@ -33,12 +33,14 @@ def index(request):
         )
     ).all()
 
-    packages = Package.objects.all()[:10]
+    packages = Package.objects.all()
+    most_popular_packages = packages[:10]
 
     context = {
         'python_versions': python_versions,
         'django_versions': django_versions,
-        'most_popular_packages': packages,
+        'most_popular_packages': most_popular_packages,
+        'packages_count': packages.count(),
     }
     return render(request, "matrix/index.html", context)
 
@@ -132,7 +134,13 @@ def contact_view(request):
         form = ContactForm(request.POST)
         if form.is_valid():
             contact_message = form.save(commit=False)
-            contact_message.ip_address = request.META.get('REMOTE_ADDR')  # Add the IP address
+            # Extract client IP from X-Forwarded-For header
+            x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR', '')
+            if x_forwarded_for:
+                client_ip = x_forwarded_for.split(',')[0].strip()
+            else:
+                client_ip = request.META.get('REMOTE_ADDR', '')
+            contact_message.ip_address = client_ip
             contact_message.save()
             messages.info(request, "Your message has been sent. Thank you!")
             return redirect('index')
@@ -141,12 +149,12 @@ def contact_view(request):
     else:
         form = ContactForm()
 
-    return render(request, 'contact.html', {'form': form})
+    return render(request, '__pages/contact.html', {'form': form})
 
 
 def custom_404(request, exception):
-    return render(request, '404.html', status=404)
+    return render(request, '__pages/404.html', status=404)
 
 
 def custom_500(request, exception):
-    return render(request, '404.html', {"foo": "bar"}, status=500)
+    return render(request, '__pages/404.html', status=500)

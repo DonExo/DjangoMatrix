@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Privacy Policy{% endblock %}
+{% block meta_description %}
+    <meta name="description" content="DjangoMatrix Privacy Policy">
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="text-muted small">
+            <em>Last updated: 04.02.2025</em></p>
+        </div>
+        <h2 class="mb-4">Privacy Policy for DjangoMatrix.com</h2>
+
+        <p class="lead">We're committed to transparency. Here's plain English about how we handle data:</p>
+
+        <h4>📊 What We Track (And Why)</h4>
+        <p>To keep our service running smoothly, we collect:</p>
+        <ul>
+            <li><b>Basic usage stats:</b> Which pages get visited (via <a href="https://plausible.io" target="_blank" rel="noopener">Plausible</a>), never including personal info</li>
+            <li><b>Server logs:</b> Anonymized IPs and request details, kept max 30 days</li>
+        </ul>
+
+        <h4>🔒 Where Your Data Lives</h4>
+        <p>Our servers are in Germany (<a href="https://www.hetzner.com" target="_blank" rel="noopener">Hetzner</a>), following strict EU privacy laws. We:</p>
+        <ul>
+            <li>Don't store personal data unless you email us directly</li>
+            <li>Use modern security practices</li>
+            <li>Never sell or share your data</li>
+        </ul>
+
+        <h4>📮 Your Control</h4>
+        <p>You can always:</p>
+        <ul>
+            <li>Ask what data we have about you</li>
+            <li>Request deletion (though server logs auto-delete in 30 days)</li>
+            <li>Opt out of analytics via your browser's "Do Not Track" setting</li>
+        </ul>
+        <p>Just use our <a href="{% url 'contact' %}" >Contact Form</a> to reach out – we will respond as soon as possible.</p>
+
+        <h4>⚠️ Important Note About Compatibility Info</h4>
+        <div class="alert alert-light">
+            <p>While we work hard to provide accurate Django package info:</p>
+            <ul>
+                <li>Always double-check with official sources before deploying</li>
+                <li>We can't take responsibility for production issues</li>
+                <li>Package maintainers may change versions unexpectedly</li>
+            </ul>
+            <p>Think of our data as helpful guidance, not absolute truth.</p>
+        </div>
+
+        <h4>🔄 Policy Changes</h4>
+        <p>If we update this page, we'll:</p>
+        <ul>
+            <li>Change the "Last Updated" date at the top</li>
+            <li>Never reduce your rights without notice</li>
+        </ul>
+
+        <hr/>
+
+        <div class="text-muted small">
+            <p>Still have questions? <br/>
+                Check out our <a href="{% url 'about' %}" >About page</a>, or use the <a href="{% url 'contact' %}" >Contact Form</a> to connect with us.<br/>
+        </div>
+    </div>
+{% endblock %}

@@ -159,6 +159,10 @@ footer a:hover {
 
 .github-fork-ribbon:before { background-color: #049063; }
 
+footer h5 {
+    text-decoration: underline;
+}
+
 .aboutpage li {
     margin-bottom: 5px;
     line-height: 25px;
