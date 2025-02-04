@@ -86,7 +86,7 @@ def package_details(request, slug):
         "package": package,
         "versions_sorted": versions_sorted,
         "graph_html": graph_html,
-        "similar_packages": similar_packages
+        "similar_packages": similar_packages[:6]
     }
     return render(request, 'matrix/package_details.html', context)
 

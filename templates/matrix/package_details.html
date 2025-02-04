@@ -49,17 +49,17 @@
 
                 <br/>
                 <h5 class="card-title">Links:</h5>
-                <ul class="list-unstyled">
-                    <li class="d-flex">
+                <ul class="list-unstyled mb-4">
+                    <li class="d-flex flex-column flex-md-row">
                         <span class="fw-bold" style="width: 200px; text-align: left;">Repository URL:</span>
-                        <a href="{{ package.repository_url }}" class="ms-2 text-primary"
-                           target="_blank">{{ package.repository_url }}
-                           <i class="bi bi-box-arrow-up-right ms-1" style="font-size: 0.9rem;"></i>
-                        </a>
+                            <a href="{{ package.repository_url }}" class="ms-2 text-primary d-block d-md-inline"
+                               target="_blank">{{ package.repository_url }}
+                               <i class="bi bi-box-arrow-up-right ms-1" style="font-size: 0.9rem;"></i>
+                            </a>
                     </li>
-                    <li class="d-flex mt-2">
+                    <li class="d-flex mt-2 flex-column flex-md-row">
                         <span class="fw-bold" style="width: 200px; text-align: left;">Documentation URL:</span>
-                        <a href="{{ package.documentation_url }}" class="ms-2 text-primary"
+                        <a href="{{ package.documentation_url }}" class="ms-2 text-primary d-block d-md-inline"
                            target="_blank">{{ package.documentation_url }}
                            <i class="bi bi-box-arrow-up-right ms-1" style="font-size: 0.9rem;"></i>
                         </a>
@@ -144,7 +144,7 @@
             <div class="card-body d-flex align-items-center mb-2 similar-packages">
                 <h5 class="card-title mb-0 me-2">Similar Packages</h5>
                 <p class="small mb-0 ">
-                    <i>Current recommendation system is based on package's Tags</i>
+                    <i>Recommendation system is based on packages' internal categories</i>
                 </p>
             </div>
             <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -186,7 +186,7 @@
                     clearActive();
                     div.classList.add('selected');
                     const djangoCompat = div.dataset.djangoCompat;
-                    detailsArea.innerHTML = `<h5>Compatible Django versions: ${djangoCompat}</h5>`;
+                    detailsArea.innerHTML = `<h5>Compatible Django versions: <span class="d-block d-sm-inline">${djangoCompat}</span></h5>`;
                 });
             });
 

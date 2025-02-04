@@ -155,7 +155,32 @@ footer a:hover {
     .github-fork-ribbon{
         display: none;
     }
+
+    /* Remove certain columns on mobile view */
+    .table th:nth-child(5),
+    .table td:nth-child(5),
+    .table th:nth-child(6),
+    .table td:nth-child(6),
+    .table th:nth-child(7),
+    .table td:nth-child(7) {
+        display: none;
+    }
+
+    nav .dropdown-toggle {
+        width: 3rem;
+    }
+
+    .navbar-nav .btn-group .dropdown-menu {
+        position: absolute !important;
+        z-index: 1050;
+        width: auto;
+    }
 }
+
+/*@media (max-width: 576px) {*/
+
+/*}*/
+
 
 .github-fork-ribbon:before { background-color: #049063; }
 

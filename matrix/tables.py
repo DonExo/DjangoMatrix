@@ -56,7 +56,7 @@ class PackageTable(tables.Table):
         return mark_safe(f"<b>{list(self.data).index(record) + 1}</b>")
 
     def render_name(self, record):
-        name_html = format_html('<span>{} </span>', record.name)
+        name_html = format_html('<span><a style="text-decoration: none; color:inherit;" href="{}">{}</a> </span>', record.slug, record.name)
 
         # Add "Unmaintained" badge conditionally
         if record.metric_last_commit:
