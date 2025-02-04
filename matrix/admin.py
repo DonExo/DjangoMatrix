@@ -2,7 +2,7 @@ from django.contrib import admin, messages
 from django.core.exceptions import ValidationError
 
 from .models import DjangoVersion, PythonVersion, Compatibility, Package, PackageVersion, PackageRepoStats, \
-    PackageRequest, PackageTopic, ContactMessage
+    PackageRequest, PackageTopic, ContactMessage, Category
 
 
 class CompatibilityInline(admin.TabularInline):
@@ -14,6 +14,10 @@ class CompatibilityInline(admin.TabularInline):
 class PackageVersionInline(admin.TabularInline):
     model = PackageVersion
     extra = 0
+
+class CategoryInline(admin.TabularInline):
+    model = Package.categories.through
+    extra = 1
 
 
 @admin.register(DjangoVersion)
@@ -37,9 +41,13 @@ class CompatibilityAdmin(admin.ModelAdmin):
 @admin.register(Package)
 class PackageAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
-    list_display = ('name', 'slug', 'metric_stars', 'metric_forks')
+    list_display = ('name', 'slug', 'metric_stars', 'metric_forks', 'display_categories')
     search_fields = ['name__icontains', 'slug__icontains', 'description__icontains']
     inlines = [PackageVersionInline]
+
+    def display_categories(self, obj):
+        return ", ".join(cat.name for cat in obj.categories.all())
+    display_categories.short_description = 'Categories'
 
 
 @admin.register(PackageVersion)
@@ -83,3 +91,12 @@ class PackageRequestAdmin(admin.ModelAdmin):
                 obj.is_approved = False
                 return
         super().save_model(request, obj, form, change)
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug', 'get_packages')
+
+    def get_packages(self, obj):
+        return ", ".join(package.slug for package in obj.packages.all())
+    get_packages.short_description = 'Packages'

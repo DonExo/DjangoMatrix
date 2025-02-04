@@ -111,6 +111,11 @@ class PackageListView(BaseFilterView, SingleTableView):
 
     def get_queryset(self):
         qs = super().get_queryset()
+
+        category_slug = self.request.GET.get('category')
+        if category_slug:
+            qs = qs.filter(categories__slug=category_slug)
+
         self.filterset = self.filterset_class(self.request.GET, queryset=qs)  # apply filters
         return self.filterset.qs.distinct()
 

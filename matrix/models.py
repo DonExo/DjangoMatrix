@@ -36,6 +36,22 @@ class PythonVersion(models.Model):
         return f"Python v{self.version}"
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=50, unique=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = "Categories"
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+
 class Package(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(unique=True, blank=True)
@@ -46,6 +62,7 @@ class Package(models.Model):
     metric_forks = models.PositiveIntegerField(null=True, blank=True)
     metric_open_issues = models.PositiveIntegerField(null=True, blank=True)
     metric_last_commit = models.DateTimeField(null=True, blank=True)
+    categories = models.ManyToManyField(Category, blank=True, related_name="packages")
 
     class Meta:
         ordering = ('-metric_stars', )
@@ -62,7 +79,9 @@ class Package(models.Model):
         versions = self.versions.all()
         if versions:
             # Sort versions using `packaging.version.Version`
-            return max(versions, key=lambda v: Version(v.version))
+            latest =  max(versions, key=lambda v: Version(v.version))
+            parts = str(latest).split('.')
+            return '.'.join(parts[:2])
         return "-"
 
     @property

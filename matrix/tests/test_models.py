@@ -31,7 +31,7 @@ class TestCoreModels:
         pkg = Package.objects.create(name="Test Package")
         PackageVersion.objects.create(package=pkg, version="1.0")
         PackageVersion.objects.create(package=pkg, version="2.0")
-        assert pkg.get_latest_version().version == "2.0"
+        assert pkg.get_latest_version() == "2.0"
 
     def test_package_version_ordering(self):
         pkg = Package.objects.create(name="Version Test")

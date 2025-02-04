@@ -110,7 +110,6 @@
                 {% empty %}
                     <p>No tags associated.</p>
                 {% endfor %}
-                <br/>
                 {% if package.metric_last_commit|is_older_than_3_years %}
                     <span class="badge text-bg-danger bg-opacity-75 fs-7">Unmaintained
                         <span data-bs-toggle="tooltip" data-bs-placement="right" title="This package hasn't been updated or maintained in over 3 years.">⚠️</span>

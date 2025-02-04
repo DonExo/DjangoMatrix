@@ -214,3 +214,40 @@ class TestViews:
             clear_url = f"{url}?per_page=10"
             response_cleared = client.get(clear_url)
             assert response_cleared.context['table'].paginator.count == 16  # Default 15 + last special one
+
+    def test_package_filter_by_category(self, client):
+        from matrix.models import Package, Category
+
+        # Create Categories
+        auth_category = Category.objects.create(name="Authentication", slug="auth")
+        api_category = Category.objects.create(name="API Development", slug="api")
+        cms_category = Category.objects.create(name="Content Management", slug="cms")
+
+        # Create Packages and assign categories
+        pkg1 = Package.objects.create(name="Auth Package", slug="auth-package", description="Package for authentication")
+        pkg1.categories.add(auth_category)
+
+        pkg2 = Package.objects.create(name="API Package", slug="api-package", description="Package for API")
+        pkg2.categories.add(api_category)
+
+        pkg3 = Package.objects.create(name="Combined Package", slug="combined-package", description="Handles both auth and api")
+        pkg3.categories.add(auth_category, api_category)
+
+        pkg4 = Package.objects.create(name="CMS Package", slug="cms-package", description="Package for CMS")
+        pkg4.categories.add(cms_category)
+
+        Package.objects.create(name="General Package", slug="general-package", description="No category assigned")
+
+        url = reverse('packages')
+        response = client.get(url, {'category': 'auth'})
+        assert response.status_code == 200
+
+        table = response.context['table']
+        filtered_package_names = {row.record.name for row in table.page.object_list}
+
+        # Only packages with the auth category should be returned:
+        assert "Auth Package" in filtered_package_names, "Auth Package should be in the results"
+        assert "Combined Package" in filtered_package_names, "Combined Package should be in the results"
+        assert "API Package" not in filtered_package_names, "API Package should not be in the results"
+        assert "CMS Package" not in filtered_package_names, "CMS Package should not be in the results"
+        assert "General Package" not in filtered_package_names, "General Package should not be in the results"
