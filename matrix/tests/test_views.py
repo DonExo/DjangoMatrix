@@ -2,7 +2,7 @@ from django.conf import settings
 from packaging.version import Version
 from django.urls import reverse
 import pytest
-from matrix.models import Package, PackageRequest, PackageVersion, PackageTopic
+from matrix.models import Package, PackageRequest, PackageVersion, PackageTopic, Category
 
 
 @pytest.mark.django_db
@@ -54,8 +54,43 @@ class TestViews:
 
         assert all(s in content for s in required_strings), f"Content missing one or more required strings"
 
-    def test_package_details_displays_similar_packages(self, client):
-        # Create main package with topics
+    def test_package_details_displays_similar_packages_by_category(self, client):
+        category_auth = Category.objects.create(name="Authentication")
+        category_web = Category.objects.create(name="Web")
+
+        main_package = Package.objects.create(
+            name="Django Main",
+            slug="django-main",
+            description="Main test package"
+        )
+        main_package.categories.add(category_auth, category_web)
+
+        # Create similar packages based on categories
+        similar_packages = [
+            ("Django Environ", "Environment variables configuration"),
+            ("DRF Spectacular", "OpenAPI schema generation"),
+            ("Django Allauth", "Authentication integration"),
+        ]
+
+        for name, desc in similar_packages:
+            pkg = Package.objects.create(name=name, description=desc)
+            pkg.categories.add(category_auth, category_web)
+
+        unrelated = Package.objects.create(name="Unrelated Package", description="No connection")
+        unrelated.categories.create(name="Graph")
+
+        response = client.get(reverse('package_details', args=[main_package.slug]))
+        content = response.content.decode()
+
+        for name, desc in similar_packages:
+            assert name in content
+            assert desc in content
+
+        assert "Unrelated Package" not in content
+        expected_packages = len(response.context['similar_packages'])
+        assert expected_packages == 3, f"Expected 3, found {expected_packages}"
+
+    def test_package_details_displays_similar_packages_by_topics(self, client):
         main_package = Package.objects.create(
             name="Django Main",
             slug="django-main",
@@ -64,7 +99,7 @@ class TestViews:
         PackageTopic.objects.create(package=main_package, name="web")
         PackageTopic.objects.create(package=main_package, name="authentication")
 
-        # Create similar packages
+        # Create similar packages based on topics
         similar_packages = [
             ("Django Environ", "Environment variables configuration"),
             ("DRF Spectacular", "OpenAPI schema generation"),

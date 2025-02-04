@@ -2,7 +2,7 @@ from packaging.version import Version
 
 from django.conf import settings
 from django.contrib import messages
-from django.db.models import Prefetch, Count
+from django.db.models import Prefetch, Count, Q
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.cache import cache_page
@@ -47,20 +47,40 @@ def index(request):
 
 @cache_page(60 * 60 * 24, key_prefix="package_details")  # Cache for 24 hours
 def package_details(request, slug):
-    package = get_object_or_404(Package.objects.prefetch_related('versions'), slug=slug)
+    package = get_object_or_404(Package.objects.prefetch_related('versions', 'categories'), slug=slug)
     versions_sorted = sorted(package.versions.prefetch_related("django_compatibility").all(),
                              key=lambda v: Version(v.version), reverse=True)
     graph_html = get_package_graph(package)
-    excluded_topics = ["python", "django"]
-    topics_to_match = package.topics.exclude(name__in=excluded_topics)
-    similar_packages = (
-        Package.objects
-        .filter(topics__name__in=topics_to_match.values_list('name', flat=True))
-        .exclude(pk=package.pk)
-        .annotate(shared_topic_count=Count('topics__name'))
-        .order_by('-shared_topic_count')
-        .distinct()
-    )
+
+    # Show similar packages based on Categories first, then fallback to Topics
+    categories_to_match = package.categories.all()
+    if categories_to_match.exists():
+        similar_packages = (
+            Package.objects
+            .filter(categories__in=categories_to_match)
+            .exclude(pk=package.pk)
+            .annotate(
+                shared_category_count=Count(
+                    'categories',
+                    filter=Q(categories__in=categories_to_match)
+                )
+            )
+            .order_by('-shared_category_count')
+            .distinct()
+        )
+    else:
+        # Fallback to topic-based logic if no categories are found
+        excluded_topics = ["python", "django"]
+        topics_to_match = package.topics.exclude(name__in=excluded_topics)
+
+        similar_packages = (
+            Package.objects
+            .filter(topics__name__in=topics_to_match.values_list('name', flat=True))
+            .exclude(pk=package.pk)
+            .annotate(shared_topic_count=Count('topics__name'))
+            .order_by('-shared_topic_count')
+            .distinct()
+        )
 
     context = {
         "package": package,
