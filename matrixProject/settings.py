@@ -61,6 +61,7 @@ INSTALLED_APPS = [
 
     # Local apps
     'matrix',
+    'utils'
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

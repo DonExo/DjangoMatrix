@@ -1,0 +1,67 @@
+<div x-data="reportForm()" x-init="init()" class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="helpModalLabel">Report Information</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Options Buttons -->
+        <div class="d-flex mb-3">
+          <button type="button" class="btn btn-outline-primary btn-sm me-2"
+                  :class="{'active': type==='new_version'}"
+                  @click="type = 'new_version'">
+            New Version
+          </button>
+          <button type="button" class="btn btn-outline-primary btn-sm me-2"
+                  :class="{'active': type==='update_version'}"
+                  @click="type = 'update_version'">
+            Update Version
+          </button>
+          <button type="button" class="btn btn-outline-primary btn-sm"
+                  :class="{'active': type==='irregularity'}"
+                  @click="type = 'irregularity'">
+            Other Irregularity
+          </button>
+        </div>
+
+        <!-- New Version Report Form -->
+        <div x-show="type==='new_version'">
+          <div class="mb-3">
+            <label class="form-label">New Package Version</label>
+            <input type="text" class="form-control" x-model="newPackageVersion" placeholder="e.g., 1.2.3" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Compatible Django Versions</label>
+            <input type="text" class="form-control" x-model="compatibleDjango" placeholder="e.g., 3.2, 4.0" required>
+            <div class="form-text">Comma separated list.</div>
+          </div>
+        </div>
+
+        <!-- Update Version Report Form -->
+        <div x-show="type==='update_version'">
+          <div class="mb-3">
+            <label class="form-label">Existing Package Version</label>
+            <input type="text" class="form-control" x-model="existingPackageVersion" placeholder="e.g., 1.2.3" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Compatible Django Versions</label>
+            <input type="text" class="form-control" x-model="compatibleDjangoUpdate" placeholder="e.g., 3.2, 4.0" required>
+            <div class="form-text">Comma separated list.</div>
+          </div>
+        </div>
+
+        <!-- Irregularity Report Form -->
+        <div x-show="type==='irregularity'">
+          <div class="mb-3">
+            <label class="form-label">Irregularity Details</label>
+            <textarea class="form-control" x-model="irregularityDetails" rows="3" placeholder="Describe the issue" required></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-sm" @click="submit()">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>

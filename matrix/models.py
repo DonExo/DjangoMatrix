@@ -58,6 +58,7 @@ class Package(models.Model):
     description = models.TextField()
     repository_url = models.URLField(max_length=500, null=True, blank=True)
     documentation_url = models.URLField(max_length=500, null=True, blank=True)
+    releases_url = models.URLField(max_length=500, null=True, blank=True)
     metric_stars = models.PositiveIntegerField(null=True, blank=True)
     metric_forks = models.PositiveIntegerField(null=True, blank=True)
     metric_open_issues = models.PositiveIntegerField(null=True, blank=True)

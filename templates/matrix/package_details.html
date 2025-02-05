@@ -34,7 +34,15 @@
                             <strong>{{ version.version|major_minor }}</strong>
                         </div>
                     {% endfor %}
-
+                    <!-- Help/Support Button -->
+                    <button id="helpButton"
+                            type="button"
+                            class="btn btn-link btn-sm ms-auto p-1 align-self-center"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="top"
+                            title="Report Irregularities">
+                        <i class="bi bi-question-circle fs-5 text-secondary"></i>
+                    </button>
                 </div>
 
                 <!-- Compatible Django Versions -->
@@ -64,6 +72,15 @@
                            <i class="bi bi-box-arrow-up-right ms-1" style="font-size: 0.9rem;"></i>
                         </a>
                     </li>
+                    {% if package.releases_url %}
+                        <li class="d-flex mt-2 flex-column flex-md-row">
+                            <span class="fw-bold" style="width: 200px; text-align: left;">Release notes URL:</span>
+                            <a href="{{ package.releases_url }}" class="ms-2 text-primary d-block d-md-inline"
+                               target="_blank">{{ package.releases_url }}
+                               <i class="bi bi-box-arrow-up-right ms-1" style="font-size: 0.9rem;"></i>
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
 
                 <div class="d-flex align-items-center mb-2">
@@ -169,10 +186,14 @@
     
     <!-- End of Container -->
     </div>
+
+    <!-- Irregularity Modal -->
+    {% include "_includes/package_details_modal.html" %}
+
 {% endblock %}
 
 {% block extra_js %}
-    <script>
+<script>
         document.addEventListener('DOMContentLoaded', function () {
             const versionDivs = document.querySelectorAll('.version-choice');
             const detailsArea = document.getElementById('selectedVersionDetails');
@@ -195,6 +216,80 @@
             } else {
               versionDivs[0].click();
             }
+
+            // Attach click event to trigger modal
+            document.getElementById('helpButton').addEventListener('click', function() {
+                 var helpModal = new bootstrap.Modal(document.getElementById('helpModal'));
+                 helpModal.show();
+            });
         });
     </script>
+
+<script>
+   function reportForm() {
+     return {
+       // Active report type: new_version, update_version, or irregularity.
+       type: 'new_version',
+       newPackageVersion: '',
+       compatibleDjango: '',
+       existingPackageVersion: '',
+       compatibleDjangoUpdate: '',
+       irregularityDetails: '',
+
+       init() {},
+
+       // CSRF token helper (for Django CSRF protection)
+       getCookie(name) {
+         let cookieValue = null;
+         if (document.cookie && document.cookie !== '') {
+             const cookies = document.cookie.split(';');
+             for (const cookie of cookies) {
+                 const trimmed = cookie.trim();
+                 if (trimmed.startsWith(name + '=')) {
+                     cookieValue = decodeURIComponent(trimmed.substring(name.length + 1));
+                     break;
+                 }
+             }
+         }
+         return cookieValue;
+       },
+
+       submit() {
+         // Build a unified payload based on the selected type.
+         let payload = { type: this.type };
+         payload.package_slug = "{{ package.slug }}"
+         if (this.type === 'new_version') {
+           payload.package_version = this.newPackageVersion;
+           payload.compatible_django = this.compatibleDjango.split(',').map(s => s.trim());
+         } else if (this.type === 'update_version') {
+           payload.existing_version = this.existingPackageVersion;
+           payload.compatible_django = this.compatibleDjangoUpdate.split(',').map(s => s.trim());
+         } else if (this.type === 'irregularity') {
+           payload.details = this.irregularityDetails;
+         }
+
+         fetch('/report/', {
+           method: 'POST',
+           headers: {
+             'Content-Type': 'application/json',
+             'X-CSRFToken': this.getCookie('csrftoken')
+           },
+           body: JSON.stringify(payload)
+         })
+         .then(response => response.json())
+         .then(data => {
+           console.log('Report submitted:', data);
+           this.newPackageVersion = '';
+           this.compatibleDjango = '';
+           this.existingPackageVersion = '';
+           this.compatibleDjangoUpdate = '';
+           this.irregularityDetails = '';
+           // Hide the modal via Bootstrap's API.
+           bootstrap.Modal.getInstance(document.getElementById('helpModal')).hide();
+         })
+         .catch(error => console.error('Error:', error));
+       }
+     }
+   }
+</script>
 {% endblock %}

@@ -11,6 +11,7 @@ from django_filters.views import BaseFilterView
 from django_tables2 import RequestConfig
 from django_tables2.views import SingleTableView
 
+from utils.utils import get_client_ip_address
 from .filters import PackageFilter
 from .forms import PackageRequestForm, ContactForm
 from .graphs import get_package_graph
@@ -159,12 +160,7 @@ def contact_view(request):
         form = ContactForm(request.POST)
         if form.is_valid():
             contact_message = form.save(commit=False)
-            # Extract client IP from X-Forwarded-For header
-            x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR', '')
-            if x_forwarded_for:
-                client_ip = x_forwarded_for.split(',')[0].strip()
-            else:
-                client_ip = request.META.get('REMOTE_ADDR', '')
+            client_ip = get_client_ip_address(request)
             contact_message.ip_address = client_ip
             contact_message.save()
             messages.info(request, "Your message has been sent. Thank you!")
