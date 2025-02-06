@@ -50,6 +50,11 @@
         </div>
     </div>
 
+    <div class="alert alert-info mt-3" role="alert">
+        <strong>Tip:</strong> Click on column headers to sort by Stars, Forks, or Open Issues.
+    </div>
+
+
     {% render_table table "django_tables2/bootstrap5.html" %}
 
     {% if filter.form.search.value and not table.page.object_list %}
@@ -61,7 +66,7 @@
 
 <br/>
 <h5 align="center">
-    Can't find what you're looking for? 
+    Can't find what you're looking for?
     <span class="d-block d-sm-inline">
         <a href="{% url 'package_add' %}">Propose it here</a>
     </span>

@@ -9,19 +9,27 @@
 {% block content %}
 
     <div class="container" x-data="{ base: 'django' }">
-        <p class="mt-5">
-            Welcome to <b>Django Matrix</b>,
-            your go-to resource for exploring Django versions, package compatibility, and version comparisons.
-            Here, you can find detailed information about different Django releases, their compatibility with Python versions, and popular packages.
-            You can also browse or request packages, compare features between versions, and ensure your projects are built on a solid, compatible foundation.
-            Whether you're starting a new project or maintaining an existing one, this site helps you make informed decisions quickly and efficiently.
-        </p>
+        <section class="hero" style="text-align: center; padding: 20px 20px;">
+            <h2 style="font-size: 3em; margin-bottom: 0.5em;">Never Guess Package Compatibility Again.</h2>
+            <p style="font-size: 1.5em; color: #666;">
+                Track Django and Django-related package compatibility, activity, and alternatives—all in one place. <br/>
+                Daily updates, interactive graphs, and crowdsourced insights to save you time and headaches.
+            </p>
+            <a href="{% url 'packages' %}" class="btn btn-success"
+               style="padding: 10px 20px; border-radius: 5px; text-decoration: none; font-size: 1em;">
+                List All Packages
+            </a>
+            <p style="font-size: 1em; color: #888; margin-top: 1em;">
+                Built by the community, for the community. Contribute on <a
+                    href="https://github.com/DonExo/DjangoMatrix" style="color: #4CAF50; text-decoration: underline;">GitHub</a>!
+            </p>
+        </section>
 
-        <div class="row mt-5">
+        <div class="row mt-4">
             <!-- Left Column -->
             <div class="col-md-6">
                 <div class="container mb-5">
-                    <h3>Most Popular Django Packages <span class="badge rounded-pill text-bg-secondary">by GitHub stars</span></h3>
+                    <h3>Most Popular Packages <span class="badge rounded-pill text-bg-secondary">by GitHub stars</span></h3>
                     <ol class="list-group mt-4">
                         {% for package in most_popular_packages %}
                             <li class="list-group-item d-flex justify-content-between align-items-center
