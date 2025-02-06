@@ -135,7 +135,11 @@
 
                 <h5 class="card-title mt-4">Additional Information:</h5>
                 <ul>
+                    {% if package.installable %}
                     <li><strong>Installation:</strong> <code>pip install {{ package.name|slugify }}</code></li>
+                    {% elif package.additional_info %}
+                        {{ package.additional_info | safe }}
+                    {% endif %}
                 </ul>
             </div>
             <div class="card-footer bg-light">

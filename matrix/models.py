@@ -64,6 +64,8 @@ class Package(models.Model):
     metric_open_issues = models.PositiveIntegerField(null=True, blank=True)
     metric_last_commit = models.DateTimeField(null=True, blank=True)
     categories = models.ManyToManyField(Category, blank=True, related_name="packages")
+    installable = models.BooleanField(default=True)
+    additional_info = models.TextField(null=True, blank=True)
 
     class Meta:
         ordering = ('-metric_stars', )

@@ -49,10 +49,11 @@ def create_package_topics(package):
     PackageTopic.objects.bulk_create(topics)
 
 
-def get_repo_stats():
-    """Fetch the metrics from GitHub for all the packages in the system and update them."""
+def get_repo_stats(slug=None):
+    """Fetch the metrics from GitHub for packages in the system and update them."""
     updates = []
-    for package in Package.objects.all():
+    packages = Package.objects.filter(slug=slug) if slug else Package.objects.all()
+    for package in packages:
         try:
             api_url = parse_github_url(package.repository_url)
             commits_url = f"{api_url}/commits?page=1"
