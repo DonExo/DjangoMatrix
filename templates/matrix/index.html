@@ -32,8 +32,7 @@
                     <h3>Most Popular Packages <span class="badge rounded-pill text-bg-secondary">by GitHub stars</span></h3>
                     <ol class="list-group mt-4">
                         {% for package in most_popular_packages %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center
-                                {% if forloop.counter == 1 %} bg-warning bg-opacity-25 {% elif forloop.counter == 2 %} bg-secondary bg-opacity-10 {% elif forloop.counter == 3 %} bg-warning bg-opacity-10 {% endif %}">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <span>
                                     <span class="fw-bold">{{ forloop.counter }}.</span>
                                     <a href="{% url 'package_details' package.slug %}" class="text-decoration-none">
