@@ -19,18 +19,24 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item dropdown dropend">
                     <div class="btn-group">
-                        <a href="{% url 'packages' %}" class="btn nav-link text-white" style="background: transparent; border: none;">Packages</a>
-                        <button type="button" class="btn nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false" style="background: transparent; border: 1px dashed white;">
+                        <a href="{% url 'packages' %}" class="btn nav-link text-white"
+                           style="background: transparent; border: none;">Packages</a>
+                        <button type="button" class="btn nav-link dropdown-toggle dropdown-toggle-split text-white"
+                                data-bs-toggle="dropdown" aria-expanded="false"
+                                style="background: transparent; border: 1px dashed white;">
                             <span class="visually-hidden">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                          <li><h6 class="dropdown-header text-muted">Filter down on specific Category</h6></li>
-                          <li><hr class="dropdown-divider"></li>
-                          <li><a class="dropdown-item" href="{% url 'packages' %}?category=auth">Auth</a></li>
-                          <li><a class="dropdown-item" href="{% url 'packages' %}?category=api">API</a></li>
-                          <li><a class="dropdown-item" href="{% url 'packages' %}?category=cms">CMS</a></li>
-                          <li><a class="dropdown-item" href="{% url 'packages' %}?category=admin">Admin</a></li>
-                          <li><a class="dropdown-item" href="{% url 'packages' %}?category=forms">Forms</a></li>
+                            <li><h6 class="dropdown-header text-muted">Filter down on specific Category</h6></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="{% url 'packages' %}?category=auth">Auth</a></li>
+                            <li><a class="dropdown-item" href="{% url 'packages' %}?category=api">API</a></li>
+                            <li><a class="dropdown-item" href="{% url 'packages' %}?category=async">Async</a></li>
+                            <li><a class="dropdown-item" href="{% url 'packages' %}?category=forms">Forms</a></li>
+                            <li><a class="dropdown-item" href="{% url 'packages' %}?category=cms">CMS</a></li>
+                            <li><a class="dropdown-item" href="{% url 'packages' %}?category=admin">Admin</a></li>
                         </ul>
                     </div>
                 </li>
