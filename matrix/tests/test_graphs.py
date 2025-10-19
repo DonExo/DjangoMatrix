@@ -15,21 +15,26 @@ class TestGraphs:
     def test_graph_generation(self):
         pkg = Package.objects.create(name="With Stats")
 
-        # Create test data in chronological order
+        # Create test data across different weeks
+        from datetime import timedelta
+        base_date = timezone.now()
+
         stats_data = [
-            (100, 10, 1),
-            (200, 20, 2),
-            (300, 30, 3)
+            (100, 10, 1, base_date - timedelta(weeks=2)),
+            (200, 20, 2, base_date - timedelta(weeks=1)),
+            (300, 30, 3, base_date)
         ]
 
-        for stars, forks, issues in stats_data:
-            PackageRepoStats.objects.create(
+        for stars, forks, issues, created_at in stats_data:
+            stat = PackageRepoStats.objects.create(
                 package=pkg,
                 metric_stars=stars,
                 metric_forks=forks,
                 metric_open_issues=issues,
-                metric_last_commit=timezone.now()
+                metric_last_commit=created_at
             )
+            stat.created_at = created_at
+            stat.save()
 
         graph_html = get_package_graph(pkg)
         assert '"mode":"lines+markers"' in graph_html
@@ -37,8 +42,8 @@ class TestGraphs:
         assert '"y":[10,20,30]' in graph_html  # Forks
         assert '"y":[1,2,3]' in graph_html  # Open issues
 
-        # Verify labels and titles
-        assert '"text":"Last 30 Days"' in graph_html
+        # Update title expectation
+        assert '"text":"Last 9 Months (Weekly)"' in graph_html
         assert '"name":"Stars"' in graph_html
         assert '"name":"Forks"' in graph_html
         assert '"name":"Open Issues"' in graph_html
